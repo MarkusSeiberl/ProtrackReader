@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android) apply false
+    kotlin("kapt")
 }
 
 android {
@@ -38,11 +40,18 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+        }
+    }
+    configurations {
+        create("cleanedAnnotations")
+        implementation {
+            exclude(group = "org.jetbrains", module = "annotations")
         }
     }
 }
@@ -57,9 +66,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.navigation.compose)
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     testImplementation(libs.junit)
@@ -69,4 +81,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    annotationProcessor(libs.hilt.compiler)
 }
