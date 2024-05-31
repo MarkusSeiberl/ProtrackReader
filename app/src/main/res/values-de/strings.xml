@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="jumpimport_imagedescription_protrack">Bild von einem Protrack2</string>
+    <string name="jumpimport_title">Protrack2 erkannt</string>
+    <string name="jumpimport_body_description">Importieren Sie Ihre vom Protrack2 aufgezeichneten Sprünge. Duplikaten können Sie entweder überschreiben oder ignorieren.</string>
+    <string name="jumpimport_button_import">Importieren</string>
+    <string name="jumpimport_button_cancel">Abbrechen</string>
+</resources>
