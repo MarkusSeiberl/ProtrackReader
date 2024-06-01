@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.hilt.android)
     kotlin("kapt")
 }
 
@@ -48,6 +48,9 @@ android {
             excludes += "META-INF/gradle/incremental.annotation.processors"
         }
     }
+    kapt {
+        correctErrorTypes = true
+    }
     configurations {
         create("cleanedAnnotations")
         implementation {
@@ -70,6 +73,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.hilt)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.navigation.compose)
     implementation(libs.hilt.android)
@@ -82,5 +86,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    annotationProcessor(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
+    kapt(libs.androidx.room.compiler)
 }

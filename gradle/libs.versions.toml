@@ -8,7 +8,8 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
-hilt = "2.51"
+hilt = "2.51.1"
+hiltNavigation = "1.2.0"
 room = "2.6.1"
 composeNavigation = "2.8.0-beta02"
 serialization = "1.6.3"
@@ -30,6 +31,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class-android", version.ref = "material3" }
+androidx-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref="hiltNavigation"}
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
