@@ -21,4 +21,8 @@ interface JumpDao {
     @Query("SELECT * FROM Jump")
     fun observeAll(): Flow<List<Jump>>
 
+    @Transaction
+    @Query("SELECT Number FROM Jump")
+    fun observeJumpNumbers(): Flow<List<Int>>
+
 }

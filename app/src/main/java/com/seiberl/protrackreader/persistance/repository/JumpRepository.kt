@@ -10,4 +10,6 @@ class JumpRepository @Inject constructor(
 ) {
     fun observeAll(): Flow<List<Jump>> = jumpDao.observeAll()
 
+    fun observeJumpNumbers(): Flow<List<Int>> = jumpDao.observeJumpNumbers()
+
 }
