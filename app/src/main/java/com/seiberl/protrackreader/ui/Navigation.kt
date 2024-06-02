@@ -28,24 +28,13 @@ fun Navigation(
     viewModel: JumpListViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    val uiState: JumpListUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
         startDestination = JumpListScreen
     ) {
         composable<JumpListScreen> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LazyColumn {
-                    items(uiState.jumps) {jump ->
-                        Text(text = "${jump.number}")
-                    }
-                }
-            }
+            JumpListContent()
         }
 
         composable<JumpDetailScreen> {

@@ -34,7 +34,7 @@ class JumpListViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             repository.observeAll().collect { updatedJumps ->
-                _uiState.update { it.copy(jumps = updatedJumps.sortedBy { it.number }) }
+                _uiState.update { it.copy(jumps = updatedJumps.sortedByDescending { it.number }) }
             }
         }
     }
