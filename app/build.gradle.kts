@@ -50,6 +50,9 @@ android {
     }
     kapt {
         correctErrorTypes = true
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
     configurations {
         create("cleanedAnnotations")
