@@ -1,0 +1,124 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a2e8cff76135c2e0043a43fc274d0e2b",
+    "entities": [
+      {
+        "tableName": "Jump",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `ProtrackID` TEXT NOT NULL, `Number` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL, `ExitAltitude` INTEGER NOT NULL, `DeploymentAltitude` INTEGER NOT NULL, `FreefallTime` INTEGER NOT NULL, `AverageSpeed` INTEGER NOT NULL, `MaxSpeed` INTEGER NOT NULL, `FirstHalfSpeed` INTEGER NOT NULL, `SecondHalfSpeed` INTEGER NOT NULL, `GroundLevelPressure` INTEGER NOT NULL, `FreefallRecorded` INTEGER NOT NULL, `CanopyRecorded` INTEGER NOT NULL, `SampleSize` INTEGER NOT NULL, `Samples` TEXT NOT NULL, PRIMARY KEY(`ID`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "protrackId",
+            "columnName": "ProtrackID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "number",
+            "columnName": "Number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "Timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exitAltitude",
+            "columnName": "ExitAltitude",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deploymentAltitude",
+            "columnName": "DeploymentAltitude",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "freefallTime",
+            "columnName": "FreefallTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageSpeed",
+            "columnName": "AverageSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxSpeed",
+            "columnName": "MaxSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstHalfSpeed",
+            "columnName": "FirstHalfSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "secondHalfSpeed",
+            "columnName": "SecondHalfSpeed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groundLevelPressure",
+            "columnName": "GroundLevelPressure",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "freefallRecorded",
+            "columnName": "FreefallRecorded",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "canopyRecorded",
+            "columnName": "CanopyRecorded",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sampleSize",
+            "columnName": "SampleSize",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "samples",
+            "columnName": "Samples",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "ID"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2e8cff76135c2e0043a43fc274d0e2b')"
+    ]
+  }
+}

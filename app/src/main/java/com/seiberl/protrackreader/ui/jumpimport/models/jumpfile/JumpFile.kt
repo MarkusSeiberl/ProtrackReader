@@ -6,12 +6,12 @@ class JumpFile {
 
     lateinit var jump: Jump
 
-    fun parseFileContent(fileContent: List<String>): Jump {
+    fun parseFileContent(fileContent: List<String>) {
         structure.forEach {
             it.readValue(fileContent)
         }
 
-        return Jump(
+        jump = Jump(
             protrackId = SerialNumber.value,
             number = JumpNumber.value,
             timestamp = DateTime.value,
@@ -40,11 +40,11 @@ class JumpFile {
     object MaxSpeed : IntSection(12)
     object FirstHalfSpeed : IntSection(14)
     object SecondHalfSpeed : IntSection(15)
-    object GroundLevelPressure: IntSection(35)
-    object FreefallRecorded: BooleanSection(36)
-    object CanopyRecorded: BooleanSection(37)
-    object SampleSize: IntSection(38)
-    object Samples: IntArraySection(39)
+    object GroundLevelPressure : IntSection(35)
+    object FreefallRecorded : BooleanSection(36)
+    object CanopyRecorded : BooleanSection(37)
+    object SampleSize : IntSection(38)
+    object Samples : IntArraySection(39)
 
     companion object {
         val structure = arrayOf<Section<*>>(

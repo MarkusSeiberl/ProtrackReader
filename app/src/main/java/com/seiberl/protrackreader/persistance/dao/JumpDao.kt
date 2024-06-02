@@ -2,6 +2,7 @@ package com.seiberl.protrackreader.persistance.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -11,8 +12,17 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface JumpDao {
 
+    @Insert
+    fun insert(jumps: List<Jump>)
+
+    @Insert
+    fun insert(jump: Jump)
+
     @Update
-    fun update(jump: Jump): Int
+    fun update(jump: Jump)
+
+    @Update
+    fun update(jumps: List<Jump>)
 
     @Delete
     fun delete(jump: Jump): Int
@@ -24,5 +34,9 @@ interface JumpDao {
     @Transaction
     @Query("SELECT Number FROM Jump")
     fun observeJumpNumbers(): Flow<List<Int>>
+
+    @Transaction
+    @Query("SELECT * FROM Jump WHERE Number IN (:jumpNumbers)")
+    fun getFilteredJumps(jumpNumbers: List<Int>): List<Jump>
 
 }
