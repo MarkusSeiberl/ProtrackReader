@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.seiberl.protrackreader.persistance.entities.Jump
+import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -30,6 +31,10 @@ interface JumpDao {
     @Transaction
     @Query("SELECT * FROM Jump")
     fun observeAll(): Flow<List<Jump>>
+
+    @Transaction
+    @Query("SELECT * FROM JumpMetaData")
+    fun observeJumpMetaData(): Flow<List<JumpMetaData>>
 
     @Transaction
     @Query("SELECT Number FROM Jump")

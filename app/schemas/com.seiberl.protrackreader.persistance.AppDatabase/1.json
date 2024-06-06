@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a2e8cff76135c2e0043a43fc274d0e2b",
+    "identityHash": "426e09390edaa5e037c8071d359de09b",
     "entities": [
       {
         "tableName": "Jump",
@@ -115,10 +115,15 @@
         "foreignKeys": []
       }
     ],
-    "views": [],
+    "views": [
+      {
+        "viewName": "JumpMetaData",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT Number as number, Timestamp as timestamp, ExitAltitude as exitAltitude, DeploymentAltitude as deploymentAltitude, FreefallTime as freefallTime FROM Jump"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a2e8cff76135c2e0043a43fc274d0e2b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '426e09390edaa5e037c8071d359de09b')"
     ]
   }
 }

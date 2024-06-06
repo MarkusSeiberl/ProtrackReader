@@ -20,9 +20,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.seiberl.protrackreader.persistance.entities.Jump
+import com.seiberl.protrackreader.persistance.views.JumpMetaData
 
 @Composable
-fun JumpItem(jump: Jump) {
+fun JumpItem(jump: JumpMetaData) {
 
     Row(
         modifier = Modifier

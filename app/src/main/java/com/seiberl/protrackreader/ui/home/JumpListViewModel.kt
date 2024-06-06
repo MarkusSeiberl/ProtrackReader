@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
+import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class JumpListUiState(
-    val jumps: List<Jump> = emptyList(),
+    val jumps: List<JumpMetaData> = emptyList(),
 )
 
 @HiltViewModel
@@ -27,13 +28,13 @@ class JumpListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(JumpListUiState())
     val uiState: StateFlow<JumpListUiState> = _uiState.asStateFlow()
 
-    private val _jumps = mutableListOf<Jump>()
-    val jumps: List<Jump>
+    private val _jumps = mutableListOf<JumpMetaData>()
+    val jumps: List<JumpMetaData>
         get() = _jumps.toList()
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            repository.observeAll().collect { updatedJumps ->
+            repository.observeJumpMetaData().collect { updatedJumps ->
                 _uiState.update { it.copy(jumps = updatedJumps.sortedByDescending { it.number }) }
             }
         }
