@@ -10,37 +10,37 @@ import com.seiberl.protrackreader.R
 
 
 sealed class NavigationBarItem(
-    val index: Int,
     val screen: Screen,
     val icon: ImageVector,
-    val title: Int
+    val title: Int,
+    var route: String
 ) {
     data object Home : NavigationBarItem(
-        index = 0,
         screen = Screen.JumpListScreen,
         icon = Icons.AutoMirrored.Default.List,
-        title = R.string.navigation_home_label
+        title = R.string.navigation_home_label,
+        route = Screen.JumpListScreen::class.java.name.toRoute()
     )
 
     data object Dropzone : NavigationBarItem(
-        index = 1,
         screen = Screen.DropzoneScreen,
         icon = Icons.Default.LocationOn,
-        title = R.string.navigation_dropzone_label
+        title = R.string.navigation_dropzone_label,
+        route = Screen.DropzoneScreen::class.java.name.toRoute()
     )
 
     data object Aircraft : NavigationBarItem(
-        index = 2,
         screen = Screen.AircraftScreen,
         icon = Icons.Default.ShoppingCart,
-        title = R.string.navigation_aircraft_label
+        title = R.string.navigation_aircraft_label,
+        route = Screen.AircraftScreen::class.java.name.toRoute()
     )
 
     data object Profile : NavigationBarItem(
-        index = 3,
         screen = Screen.ProfileScreen,
         icon = Icons.Default.AccountCircle,
-        title = R.string.navigation_profile_label
+        title = R.string.navigation_profile_label,
+        route = Screen.ProfileScreen::class.java.name.toRoute()
     )
 }
 
@@ -51,3 +51,5 @@ val NAVIGATION_BAR_ITEMS = listOf(
     NavigationBarItem.Aircraft,
     NavigationBarItem.Profile
 )
+
+private fun String.toRoute() = replace("$", ".")
