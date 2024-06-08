@@ -33,7 +33,7 @@ fun CustomNavigationBar(navController: NavController) {
     }
 
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        NavigationBarItems().items.forEach { item ->
+        NAVIGATION_BAR_ITEMS.forEach { item ->
             NavigationBarItem(
                 selected = selectedItem == item.index,
                 onClick = { onNavigationItemClick(item) },
