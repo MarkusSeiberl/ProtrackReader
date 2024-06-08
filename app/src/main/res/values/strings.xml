@@ -8,4 +8,11 @@
     <string name="jumpimport_body_description">Import your recorded jumps from the Protrack2. In case of any duplicates, you will be asked to either override or skip the duplicates.</string>
     <string name="jumpimport_button_import">Import</string>
     <string name="jumpimport_button_cancel">Cancel</string>
+
+    <string name="jumplist_button_description">Import jump button</string>
+
+    <string name="navigation_home_label">Jumps</string>
+    <string name="navigation_dropzone_label">DZs</string>
+    <string name="navigation_aircraft_label">Aircraft</string>
+    <string name="navigation_profile_label">Profile</string>
 </resources>
