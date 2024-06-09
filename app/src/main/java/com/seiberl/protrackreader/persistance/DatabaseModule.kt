@@ -2,6 +2,7 @@ package com.seiberl.protrackreader.persistance
 
 import android.content.Context
 import androidx.room.Room
+import com.seiberl.protrackreader.persistance.repository.JumpDetailRepository
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
 import dagger.Module
 import dagger.Provides
@@ -30,5 +31,8 @@ object DatabaseModule {
 
     @Provides
     fun provideJumpRepository(database: AppDatabase) = JumpRepository(database.jumpDao)
+
+    @Provides
+    fun provideJumpDetailRepository(database: AppDatabase) = JumpDetailRepository(database.jumpDao)
 
 }

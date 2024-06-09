@@ -19,10 +19,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.seiberl.protrackreader.ui.Screen.JumpDetailScreen
 import com.seiberl.protrackreader.ui.aircrafts.AircraftScreen
 import com.seiberl.protrackreader.ui.dropzone.DropzoneScreen
 import com.seiberl.protrackreader.ui.home.JumpListScreen
+import com.seiberl.protrackreader.ui.jumpdetail.JumpDetailScreen
 import com.seiberl.protrackreader.ui.profile.ProfileScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,18 +53,9 @@ fun Navigation() {
 
             composable<Screen.ProfileScreen> { ProfileScreen() }
 
-            composable<JumpDetailScreen> {
-                val args = it.toRoute<JumpDetailScreen>()
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "jump nr: ${args.jumpNr}")
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "Go to screen list")
-                    }
-                }
+            composable<Screen.JumpDetailScreen> {
+                val args = it.toRoute<Screen.JumpDetailScreen>()
+                JumpDetailScreen(args.jumpNr, navController)
             }
         }
     }

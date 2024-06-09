@@ -44,4 +44,8 @@ interface JumpDao {
     @Query("SELECT * FROM Jump WHERE Number IN (:jumpNumbers)")
     fun getFilteredJumps(jumpNumbers: List<Int>): List<Jump>
 
+    @Transaction
+    @Query("SELECT * FROM Jump WHERE Number = :jumpNr")
+    fun getJumpByNumber(jumpNr: Int): Jump?
+
 }
