@@ -25,7 +25,6 @@ import com.seiberl.protrackreader.ui.home.JumpListScreen
 import com.seiberl.protrackreader.ui.jumpdetail.JumpDetailScreen
 import com.seiberl.protrackreader.ui.profile.ProfileScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Navigation() {

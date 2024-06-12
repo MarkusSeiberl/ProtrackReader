@@ -59,7 +59,7 @@ fun JumpListScreen(
                 ),
                 scrollBehavior = scrollBehavior,
                 title = {
-                    Text("Small Top App Bar")
+                    Text(stringResource(R.string.jumplist_title))
                 }
             )
         }
