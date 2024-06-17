@@ -1,44 +1,39 @@
 package com.seiberl.protrackreader.ui
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
 import com.seiberl.protrackreader.R
 
 
 sealed class NavigationBarItem(
     val screen: Screen,
-    val icon: ImageVector,
+    @get:DrawableRes val icon: Int,
     val title: Int,
     var route: String
 ) {
     data object Home : NavigationBarItem(
         screen = Screen.JumpListScreen,
-        icon = Icons.AutoMirrored.Default.List,
+        icon = R.drawable.list,
         title = R.string.navigation_home_label,
         route = Screen.JumpListScreen::class.java.name.toRoute()
     )
 
     data object Dropzone : NavigationBarItem(
         screen = Screen.DropzoneScreen,
-        icon = Icons.Default.LocationOn,
+        icon = R.drawable.location,
         title = R.string.navigation_dropzone_label,
         route = Screen.DropzoneScreen::class.java.name.toRoute()
     )
 
     data object Aircraft : NavigationBarItem(
         screen = Screen.AircraftScreen,
-        icon = Icons.Default.ShoppingCart,
+        icon = R.drawable.aircraft,
         title = R.string.navigation_aircraft_label,
         route = Screen.AircraftScreen::class.java.name.toRoute()
     )
 
     data object Profile : NavigationBarItem(
         screen = Screen.ProfileScreen,
-        icon = Icons.Default.AccountCircle,
+        icon = R.drawable.account_circle,
         title = R.string.navigation_profile_label,
         route = Screen.ProfileScreen::class.java.name.toRoute()
     )

@@ -7,6 +7,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 
 @Composable
@@ -23,7 +24,7 @@ fun CustomNavigationBar(
                 NavigationBarItem(
                     selected = selectedDestination == item.route,
                     onClick = { navigateTo(item) },
-                    icon = { Icon(item.icon, "") },
+                    icon = { Icon(painterResource(id = item.icon), null) },
                     label = { Text(stringResource(id = item.title)) }
                 )
             }
