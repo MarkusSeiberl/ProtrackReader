@@ -1,12 +1,14 @@
 package com.seiberl.protrackreader.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun JumpItem(jump: JumpMetaData) {
@@ -29,7 +33,8 @@ fun JumpItem(jump: JumpMetaData) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .height(IntrinsicSize.Min),
+            .height(IntrinsicSize.Min)
+            .padding(16.dp, 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         JumpNumber(number = jump.number)
@@ -38,22 +43,46 @@ fun JumpItem(jump: JumpMetaData) {
             modifier = Modifier,
             horizontalAlignment = Alignment.Start
         ) {
-            Text("${jump.exitAltitude}")
+            Text("${jump.exitAltitude.toInt()} m")
             Text("Exit")
         }
 
-        Text(text = "–", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            modifier = Modifier.padding(16.dp, 0.dp),
+            text = "–",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         Column(
             modifier = Modifier.padding(4.dp),
             horizontalAlignment = Alignment.End
         ) {
-            Text("${jump.deploymentAltitude}")
+            Text("${jump.deploymentAltitude.toInt()} m")
             Text("DPL")
         }
 
-        VerticalDivider(modifier = Modifier.fillMaxHeight(0.8f).padding(4.dp), color = MaterialTheme.colorScheme.secondary)
-        Text(text = "sdf")
+        Row (modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+
+
+            VerticalDivider(
+                modifier = Modifier
+                    .fillMaxHeight(0.8f)
+                    .padding(16.dp, 0.dp), color = MaterialTheme.colorScheme.secondary
+            )
+
+            Column(
+                horizontalAlignment = Alignment.End
+            ) {
+                val timeFormatter = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault())
+                val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yy").withZone(ZoneId.systemDefault())
+                Text(text = timeFormatter.format(jump.timestamp))
+                Text(text = dateFormatter.format(jump.timestamp))
+
+            }
+        }
     }
 
 }
@@ -61,8 +90,7 @@ fun JumpItem(jump: JumpMetaData) {
 
 @Composable
 fun JumpNumber(number: Int) {
-    Box(modifier = Modifier
-        .padding(8.dp)
+    Box(modifier = Modifier.padding(0.dp, 0.dp, 16.dp, 0.dp)
         .clip(RoundedCornerShape(10.dp))
         .background(Color.LightGray)
     ) {

@@ -43,7 +43,8 @@ import com.seiberl.protrackreader.ui.theme.surfaceLight
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JumpListScreen(
-    navController: NavController
+    viewModel: JumpListViewModel,
+    navController: NavController,
 ) {
 
     val scrollBehavior =
@@ -62,19 +63,20 @@ fun JumpListScreen(
                     Text(stringResource(R.string.jumplist_title))
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                modifier = Modifier,
+                onClick = { viewModel.onJumpImportClick() },
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+            ) {
+                Icon(Icons.Filled.Add, stringResource(id = R.string.jumpimport_title))
+            }
         }
     ) { padding ->
 
-        FloatingActionButton(
-            modifier = Modifier.padding(padding),
-            onClick = { /*TODO*/ },
-            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-        ) {
-            Icon(Icons.Filled.Add, stringResource(id = R.string.jumpimport_title))
-        }
-
-        ScrollContent(padding = padding, navController = navController)
+        ScrollContent(padding = padding, viewModel, navController = navController)
 
     }
 }
@@ -82,7 +84,7 @@ fun JumpListScreen(
 @Composable
 fun ScrollContent(
     padding: PaddingValues,
-    viewModel: JumpListViewModel = hiltViewModel(),
+    viewModel: JumpListViewModel,
     navController: NavController
 ) {
 

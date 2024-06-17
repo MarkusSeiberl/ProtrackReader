@@ -7,17 +7,23 @@ import android.os.Environment
 import android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import com.seiberl.protrackreader.ui.Navigation
+import com.seiberl.protrackreader.ui.home.JumpListViewModel
+import com.seiberl.protrackreader.ui.jumpimport.JumpImportActivity
 import com.seiberl.protrackreader.ui.theme.ProtrackReaderTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val jumpListViewModel: JumpListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ProtrackReaderTheme {
-                Navigation()
+                Navigation(jumpListViewModel)
             }
         }
 
@@ -26,5 +32,12 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri)
             startActivity(intent)
         }
+
+        jumpListViewModel.clickEvent = ::onShowJumpImportView
+    }
+
+    private fun onShowJumpImportView() {
+        val intent = Intent(this, JumpImportActivity::class.java)
+        startActivity(intent)
     }
 }

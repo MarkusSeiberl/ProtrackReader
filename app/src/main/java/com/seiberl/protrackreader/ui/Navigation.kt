@@ -22,12 +22,13 @@ import androidx.navigation.toRoute
 import com.seiberl.protrackreader.ui.aircrafts.AircraftScreen
 import com.seiberl.protrackreader.ui.dropzone.DropzoneScreen
 import com.seiberl.protrackreader.ui.home.JumpListScreen
+import com.seiberl.protrackreader.ui.home.JumpListViewModel
 import com.seiberl.protrackreader.ui.jumpdetail.JumpDetailScreen
 import com.seiberl.protrackreader.ui.profile.ProfileScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Navigation() {
+fun Navigation(jumpListViewModel: JumpListViewModel) {
     val navController = rememberNavController()
     val navigationActions = remember(navController) {
         NavigationActions(navController)
@@ -44,7 +45,7 @@ fun Navigation() {
             navController = navController,
             startDestination = Screen.JumpListScreen
         ) {
-            composable<Screen.JumpListScreen> { JumpListScreen(navController = navController) }
+            composable<Screen.JumpListScreen> { JumpListScreen(jumpListViewModel, navController = navController) }
 
             composable<Screen.DropzoneScreen> { DropzoneScreen(navController = navController) }
 
