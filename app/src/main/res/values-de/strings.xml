@@ -2,6 +2,12 @@
 <resources>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
+    <string name="jumpdetail_info_title_deployment">Öffnungshöhe</string>
+    <string name="jumpdetail_info_title_exit">Absprunghöhe</string>
+    <string name="jumpdetail_info_title_freefall">Freifallzeit</string>
+    <string name="jumpdetail_info_title_maxspeed">Max. Geschwindigkeit</string>
+    <string name="jumpdetail_info_title_avgspeed">Ø Geschwindigkeit</string>
+
 
     <string name="jumpimport_imagedescription_protrack">Bild von einem Protrack2</string>
     <string name="jumpimport_title">Protrack2 erkannt</string>

@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name" translatable="false">ProtrackReader</string>
     <string name="title_activity_jump_import" translatable="false">JumpImportActivity</string>
+    <string name="jumpdetail_info_content_meter" translatable="false">%1$s m</string>
+    <string name="jumpdetail_info_content_seconds" translatable="false">%1$s s</string>
+    <string name="jumpdetail_info_content_speed_kmh" translatable="false">%1$s km/h</string>
 
     <string name="jumpdetail_title">Jump %1$s</string>
+    <string name="jumpdetail_info_title_deployment">Dpl. Altitude</string>
+    <string name="jumpdetail_info_title_exit">Exit Altitude</string>
+    <string name="jumpdetail_info_title_freefall">Freefall</string>
+    <string name="jumpdetail_info_title_maxspeed">Max. Speed</string>
+    <string name="jumpdetail_info_title_avgspeed">Ø Speed</string>
 
     <string name="jumpimport_imagedescription_protrack">Image of a Protrack2</string>
     <string name="jumpimport_title">Protrack2 detected</string>
