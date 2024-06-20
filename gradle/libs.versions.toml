@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.1"
+agp = "8.4.2"
 kotlin = "1.9.24"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -11,9 +11,10 @@ composeBom = "2024.05.00"
 hilt = "2.51.1"
 hiltNavigation = "1.2.0"
 room = "2.6.1"
-composeNavigation = "2.8.0-beta02"
+composeNavigation = "2.8.0-beta03"
 serialization = "1.6.3"
 material3 = "1.2.1"
+vico = "2.0.0-alpha.21"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,8 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
