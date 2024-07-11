@@ -1,5 +1,6 @@
 package com.seiberl.protrackreader.ui.jumpdetail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
@@ -27,11 +28,7 @@ class JumpDetailViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val modelProducer = CartesianChartModelProducer.build {
-        lineSeries {
-            series(1, 2, 3, 5, 6, 7, 8, 9, 10)
-        }
-    }
+    private val modelProducer = CartesianChartModelProducer.build()
     private val _uiState = MutableStateFlow(JumpDetailUiState(null, modelProducer))
     val uiState = _uiState.asStateFlow()
 
@@ -50,7 +47,8 @@ class JumpDetailViewModel @Inject constructor(
 
         val profile = jump.samples.map { it.toAltitude(jump.groundLevelPressure) }
         val time = List(profile.size) { index -> index * 0.25 }
-        val points = profile.mapIndexed { index, value -> time[index] to value }.reversed()
+        val speed = profile.map {  }
+        Log.d("TAAG", "max time = ${time.maxOrNull()}")
 
 
 

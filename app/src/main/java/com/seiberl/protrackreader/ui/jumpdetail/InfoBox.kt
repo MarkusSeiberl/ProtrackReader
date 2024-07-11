@@ -22,13 +22,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun InfoBox(
+    modifier: Modifier = Modifier,
     icon: ImageVector = Icons.Filled.Info,
     @StringRes title: Int,
     content: Int,
     @StringRes contentRes: Int
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(16.dp, 8.dp)
