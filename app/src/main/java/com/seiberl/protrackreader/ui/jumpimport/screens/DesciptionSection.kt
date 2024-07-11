@@ -48,7 +48,8 @@ fun DescriptionSection(
 
         Text(
             text = stringResource(R.string.jumpimport_body_description),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Justify
         )
 
         Spacer(modifier = Modifier.size(32.dp))
@@ -68,6 +69,8 @@ fun DescriptionSection(
                     textAlign = TextAlign.Center
                 )
             }
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),

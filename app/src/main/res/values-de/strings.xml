@@ -11,7 +11,7 @@
 
     <string name="jumpimport_imagedescription_protrack">Bild von einem Protrack2</string>
     <string name="jumpimport_title">Protrack2 erkannt</string>
-    <string name="jumpimport_body_description">Importieren Sie Ihre vom Protrack2 aufgezeichneten Sprünge. Duplikaten können Sie entweder überschreiben oder ignorieren.</string>
+    <string name="jumpimport_body_description">Importieren Sie Ihre vom Protrack2 aufgezeichneten Sprünge. Duplikate werden ignoriert.</string>
     <string name="jumpimport_button_import">Importieren</string>
     <string name="jumpimport_button_cancel">Abbrechen</string>
 
@@ -22,7 +22,7 @@
     <string name="navigation_home_label">Sprünge</string>
     <string name="navigation_dropzone_label">DZs</string>
     <string name="navigation_aircraft_label">Flugzeuge</string>
-    <string name="navigation_profile_label">Profile</string>
+    <string name="navigation_profile_label">Profil</string>
 
     <string name="permission_dialog_title">Zugriffsberechtigung</string>
     <string name="permissions_dialog_description">"Die ProtrackReader App braucht die Dateizugriffsberechtigung. Bestätigen Sie diese bitte in den Einstellungen."</string>

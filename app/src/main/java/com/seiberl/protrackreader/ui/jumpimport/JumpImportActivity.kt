@@ -24,7 +24,6 @@ class JumpImportActivity : ComponentActivity() {
 
         viewModel.onShowNextActivity = ::onShowNextActivity
 
-        enableEdgeToEdge()
         setContent {
             ProtrackReaderTheme {
                 val windowSize = calculateWindowSizeClass(activity = this)

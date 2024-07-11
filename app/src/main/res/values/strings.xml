@@ -14,7 +14,7 @@
 
     <string name="jumpimport_imagedescription_protrack">Image of a Protrack2</string>
     <string name="jumpimport_title">Protrack2 detected</string>
-    <string name="jumpimport_body_description">Import your recorded jumps from the Protrack2. In case of any duplicates, you will be asked to either override or skip the duplicates.</string>
+    <string name="jumpimport_body_description">Import your recorded jumps from the Protrack2. Duplicates will be ignored.</string>
     <string name="jumpimport_button_import">Import</string>
     <string name="jumpimport_button_cancel">Cancel</string>
 

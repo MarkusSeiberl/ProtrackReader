@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.BEFORE_IMPORT
 import com.seiberl.protrackreader.ui.jumpimport.models.JumpFileReader
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,8 @@ import javax.inject.Inject
 typealias Navigation = () -> Unit
 
 data class ImportUiState(
-    val hasDuplicates: Boolean = false
+    val importState: ImportState = ImportState.BEFORE_IMPORT,
+    val currentJumpNumber: Int = 0
 )
 
 private const val TAG = "JumpImportViewModel"
@@ -66,41 +69,26 @@ class JumpImportViewModel @Inject constructor(
         val jumpNumbers = jumpFileReader.readStoredJumpNumbers()
         Log.d(TAG, "Found ${jumpNumbers.size} already stored jumps")
 
-        if (jumpNumbers.any { recordedJumps.contains(it) }) {
-            Log.d(TAG, "Found duplicate jumps. Notify user.")
-            _uiState.update { it.copy(hasDuplicates = true) }
-        } else {
-            viewModelScope.launch(ioDispatcher) {
-                Log.d(TAG, "Starting import.")
-                importJumps(true)
-            }.invokeOnCompletion {
-                onShowNextActivity()
-            }
+        viewModelScope.launch(ioDispatcher) {
+            Log.d(TAG, "Starting import.")
+            importJumps()
+        }.invokeOnCompletion {
+            onShowNextActivity() // todo show finished screen - either retry or finish
         }
     }
 
-    private fun importJumps(overrideDuplicates: Boolean) {
+
+    private fun importJumps(overrideDuplicates: Boolean = false) {
         val recordedJumpData = jumpFileReader.readStoredJumps()
 
-        val (newJumps, duplicateJumps) = when {
-            uiState.value.hasDuplicates && overrideDuplicates -> {
-                // Split new jumps up in jumps to simply import and jumps that should be updated.
-                val newJumps = recordedJumpData.filter(isNewPredicate)
-                val duplicateJumps = recordedJumpData.filter(isDuplicatePredicate)
-                newJumps to duplicateJumps
-            }
-
-            uiState.value.hasDuplicates && !overrideDuplicates -> {
-                // Filter out duplicate jumps.
-                val filteredJumps = recordedJumpData.filter(isNewPredicate)
-                filteredJumps to emptyList()
-            }
-
-            else -> {
-                // Import all jumps. There are no duplicates
-                Log.d(TAG, "Importing all Jumps. No duplicates.")
-                recordedJumpData to emptyList()
-            }
+        val (newJumps, duplicateJumps) = if (overrideDuplicates) {
+            // Split new jumps up in jumps to simply import and jumps that should be updated.
+            val newJumps = recordedJumpData.filter(isNewPredicate)
+            val duplicateJumps = recordedJumpData.filter(isDuplicatePredicate)
+            newJumps to duplicateJumps
+        } else {
+            val newJumps = recordedJumpData.filter(isNewPredicate)
+            newJumps to emptyList()
         }
 
         repository.insertJumpNumbers(newJumps, duplicateJumps)

@@ -9,16 +9,30 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seiberl.protrackreader.ui.jumpimport.ImportUiState
 import com.seiberl.protrackreader.ui.jumpimport.JumpImportViewModel
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState
 
 @Composable
 fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeClass) {
+
+    val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val blur = if (uiState.importState == ImportState.IMPORT_ONGOING) 8.dp else 0.dp
+
+
+
     when (windowsWidth) {
         WindowWidthSizeClass.Expanded -> Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(blur),
             horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -40,7 +54,8 @@ fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeCl
         WindowWidthSizeClass.Compact, WindowWidthSizeClass.Medium -> Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
+                .padding(32.dp)
+                .blur(blur),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -58,5 +73,9 @@ fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeCl
                 windowsWidth
             )
         }
+    }
+
+    if (uiState.importState == ImportState.IMPORT_ONGOING) {
+        ImportOverlay(viewModel)
     }
 }
