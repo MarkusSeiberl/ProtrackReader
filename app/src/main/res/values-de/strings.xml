@@ -23,4 +23,7 @@
     <string name="navigation_dropzone_label">DZs</string>
     <string name="navigation_aircraft_label">Flugzeuge</string>
     <string name="navigation_profile_label">Profile</string>
+
+    <string name="permission_dialog_title">Zugriffsberechtigung</string>
+    <string name="permissions_dialog_description">"Die ProtrackReader App braucht die Dateizugriffsberechtigung. Bestätigen Sie diese bitte in den Einstellungen."</string>
 </resources>

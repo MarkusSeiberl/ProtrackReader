@@ -1,31 +1,22 @@
 package com.seiberl.protrackreader.ui.home
 
-import android.content.Intent
-import android.util.Log
+import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
-import com.seiberl.protrackreader.ui.jumpimport.JumpImportActivity
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 data class JumpListUiState(
     val jumps: List<JumpMetaData> = emptyList(),
+    val showPermissionDialog: Boolean = false
 )
 
 @HiltViewModel
@@ -38,22 +29,35 @@ class JumpListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(JumpListUiState())
     val uiState: StateFlow<JumpListUiState> = _uiState
 
-    lateinit var clickEvent: () -> Unit
-
-    private val _jumps = mutableListOf<JumpMetaData>()
-    val jumps: List<JumpMetaData>
-        get() = _jumps.toList()
+    lateinit var fabClickEvent: () -> Unit
+    lateinit var onRequestPermission: () -> Unit
 
     init {
         viewModelScope.launch(ioDispatcher) {
+            // Get and observe all jumps from database
             repository.observeJumpMetaData().collect { updatedJumps ->
-                _uiState.update { it.copy(jumps = updatedJumps.sortedByDescending { it.number }) }
+                _uiState.update { oldState ->
+                    oldState.copy(jumps = updatedJumps.sortedByDescending { it.number })
+                }
             }
+        }
 
+        // Check if we have permission to read external storage (= Protrack II)
+        if (!Environment.isExternalStorageManager()) {
+            _uiState.update { it.copy(showPermissionDialog = true) }
         }
     }
 
     fun onJumpImportClick() {
-        clickEvent()
+        fabClickEvent()
+    }
+
+    fun onPermissionDialogDismiss() {
+        _uiState.update { it.copy(showPermissionDialog = false) }
+    }
+
+    fun onPermissionDialogConfirmed() {
+        _uiState.update { it.copy(showPermissionDialog = false) }
+        onRequestPermission()
     }
 }
