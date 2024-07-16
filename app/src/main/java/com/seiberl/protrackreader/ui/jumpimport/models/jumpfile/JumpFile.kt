@@ -5,8 +5,10 @@ import com.seiberl.protrackreader.persistance.entities.Jump
 class JumpFile {
 
     lateinit var jump: Jump
+    lateinit var fileContent: List<String>
 
     fun parseFileContent(fileContent: List<String>) {
+        this.fileContent = fileContent
         structure.forEach {
             it.readValue(fileContent)
         }

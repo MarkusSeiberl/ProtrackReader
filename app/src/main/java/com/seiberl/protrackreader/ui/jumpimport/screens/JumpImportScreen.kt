@@ -17,16 +17,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seiberl.protrackreader.ui.jumpimport.ImportUiState
 import com.seiberl.protrackreader.ui.jumpimport.JumpImportViewModel
-import com.seiberl.protrackreader.ui.jumpimport.models.ImportState
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_FAILED
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_ONGOING
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_SUCCESSFUL
 
 @Composable
 fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeClass) {
 
     val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val blur = if (uiState.importState == ImportState.IMPORT_ONGOING) 8.dp else 0.dp
+    val shouldShowOverlay =
+        listOf(IMPORT_ONGOING, IMPORT_SUCCESSFUL, IMPORT_FAILED).contains(uiState.importState)
 
-
+    val blur = if (shouldShowOverlay) 8.dp else 0.dp
 
     when (windowsWidth) {
         WindowWidthSizeClass.Expanded -> Row(
@@ -75,7 +78,7 @@ fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeCl
         }
     }
 
-    if (uiState.importState == ImportState.IMPORT_ONGOING) {
+    if (shouldShowOverlay) {
         ImportOverlay(viewModel)
     }
 }

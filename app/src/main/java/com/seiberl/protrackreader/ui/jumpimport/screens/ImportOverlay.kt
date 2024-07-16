@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,10 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seiberl.protrackreader.R
 import com.seiberl.protrackreader.ui.jumpimport.ImportUiState
 import com.seiberl.protrackreader.ui.jumpimport.JumpImportViewModel
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState
 
 @Composable
 fun ImportOverlay(viewModel: JumpImportViewModel) {
@@ -29,21 +35,125 @@ fun ImportOverlay(viewModel: JumpImportViewModel) {
         .background(MaterialTheme.colorScheme.background)
         .fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.align(Alignment.Center)
-        ) {
 
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(64.dp)
-                    .align(Alignment.CenterHorizontally),
-                color = MaterialTheme.colorScheme.secondary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+
+        if (uiState.importState == ImportState.IMPORT_ONGOING) {
+            ImportOnGoingOverlay(
+                modifier = Modifier.align(Alignment.Center),
+                viewModel = viewModel
             )
+        } else if (uiState.importState == ImportState.IMPORT_SUCCESSFUL) {
+            ImportSuccessfulOverlay(
+                modifier = Modifier.align(Alignment.Center),
+                viewModel = viewModel
+            )
+        } else if (uiState.importState == ImportState.IMPORT_FAILED) {
+            ImportFailedOverlay(
+                modifier = Modifier.align(Alignment.Center),
+                viewModel = viewModel
+            )
+        }
 
-            Spacer(modifier = Modifier.size(24.dp))
 
-            Text(text = "Importing Jump: ${uiState.currentJumpNumber}")
+    }
+}
+
+@Composable
+fun ImportOnGoingOverlay(
+    modifier: Modifier = Modifier,
+    viewModel: JumpImportViewModel
+) {
+
+    val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Column(modifier = modifier) {
+
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(64.dp)
+                .align(Alignment.CenterHorizontally),
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
+
+        Spacer(modifier = Modifier.size(24.dp))
+
+        Text(text = "Importing Jump: ${uiState.currentJumpNumber}")
+    }
+}
+
+@Composable
+fun ImportSuccessfulOverlay(
+    modifier: Modifier = Modifier,
+    viewModel: JumpImportViewModel
+) {
+
+    val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Column(modifier = modifier) {
+
+        Icon(
+            modifier = Modifier
+                .size(64.dp)
+                .align(Alignment.CenterHorizontally),
+            painter = painterResource(id = R.drawable.check_circle),
+            tint = MaterialTheme.colorScheme.tertiary,
+            contentDescription = null
+        )
+
+        Spacer(modifier = Modifier.size(24.dp))
+
+        Text(text = "Imported ${uiState.importedJumps} jumps.")
+
+        Spacer(modifier = Modifier.size(24.dp))
+
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = { viewModel.onContinueClick() }
+        ) {
+            Text(
+                text = "Continue",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+
+@Composable
+fun ImportFailedOverlay(
+    modifier: Modifier = Modifier,
+    viewModel: JumpImportViewModel
+) {
+
+    val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Column(modifier = modifier) {
+
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(64.dp)
+                .align(Alignment.CenterHorizontally),
+            progress = { 100f },
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
+
+        Spacer(modifier = Modifier.size(24.dp))
+
+        Text(text = "Import failed!", color = MaterialTheme.colorScheme.error)
+
+        Spacer(modifier = Modifier.size(24.dp))
+
+        Button(
+            onClick = {  }
+        ) {
+            Text(
+                text = "Retry",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

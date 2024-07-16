@@ -9,13 +9,13 @@ private const val TAG = "JumpFileParser"
 
 class JumpFileParser {
 
-    fun parse(jumpFile: File): Jump {
+    fun parse(jumpFile: File): JumpFile {
         val lines = jumpFile.readLines()
         val jumpFileData = JumpFile()
         Log.d(TAG, "Jump file has ${lines.size} lines.")
 
         jumpFileData.parseFileContent(lines)
         Log.d(TAG, "Jump file successfully parsed.")
-        return jumpFileData.jump
+        return jumpFileData
     }
 }

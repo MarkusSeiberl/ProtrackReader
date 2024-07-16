@@ -12,13 +12,16 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seiberl.protrackreader.R
 import com.seiberl.protrackreader.ui.jumpimport.JumpImportViewModel
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_START_FAILED
 
 @Composable
 fun DescriptionSection(
@@ -80,6 +83,18 @@ fun DescriptionSection(
                     text = stringResource(R.string.jumpimport_button_cancel),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
+                )
+            }
+
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            if (uiState.importState == IMPORT_START_FAILED) {
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(
+                    text = "Cannot find Volume!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         }

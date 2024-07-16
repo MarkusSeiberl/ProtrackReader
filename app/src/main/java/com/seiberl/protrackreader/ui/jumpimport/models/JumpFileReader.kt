@@ -4,16 +4,18 @@ import android.content.Context
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
 import android.util.Log
-import com.seiberl.protrackreader.persistance.entities.Jump
+import com.seiberl.protrackreader.ui.jumpimport.models.jumpfile.JumpFile
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val PROTRACK_VOLUME_DESCRIPTION = "PROTRACK2"
 private const val JUMP_FILE_REGEX = "^\\d+\\.txt\$"
 
 private const val TAG = "JumpFileReader"
 
+@Singleton
 class JumpFileReader @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
@@ -48,15 +50,19 @@ class JumpFileReader @Inject constructor(
         }
     }
 
-    fun readStoredJumps(): List<Jump> {
-        val files = fetchJumpFiles()
-        val parser = JumpFileParser()
-        Log.d(TAG, "Found ${files.size} jump files.")
-
-        return files.map { jumpFile ->
-            Log.d(TAG, "Parsing ${jumpFile.name}.")
-            parser.parse(jumpFile)
+    fun readStoredJump(jumpNr: Int): JumpFile {
+        val jumpFile = fetchJumpFile(jumpNr)
+        if (jumpFile == null) {
+            Log.w(TAG, "Could not find jump file with number $jumpNr")
+            throw Exception("Could not find jump file with number $jumpNr")
         }
+        val parser = JumpFileParser()
+        return parser.parse(jumpFile)
+    }
+
+    private fun fetchJumpFile(jumpNr: Int): File? {
+        val files = protrackVolume.directory?.listFiles() ?: arrayOf()
+        return files.firstOrNull { file -> file.name == "$jumpNr.txt" }
     }
 
     private fun fetchJumpFiles(): List<File> {

@@ -12,9 +12,14 @@ class JumpRepository @Inject constructor(
     fun observeJumpMetaData(): Flow<List<JumpMetaData>> = jumpDao.observeJumpMetaData()
 
     fun observeJumpNumbers(): Flow<List<Int>> = jumpDao.observeJumpNumbers()
+
     fun insertJumpNumbers(recordedJumpData: List<Jump>, duplicateJumpData: List<Jump>) {
         jumpDao.insert(recordedJumpData)
         updateJumps(duplicateJumpData)
+    }
+
+    fun insertJump(recordedJumpData: Jump) {
+        jumpDao.insert(recordedJumpData)
     }
 
     private fun updateJumps(incomingJumps: List<Jump>) {

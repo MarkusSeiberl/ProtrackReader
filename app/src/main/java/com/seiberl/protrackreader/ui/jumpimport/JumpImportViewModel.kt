@@ -3,14 +3,19 @@ package com.seiberl.protrackreader.ui.jumpimport
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
 import com.seiberl.protrackreader.ui.jumpimport.models.ImportState
-import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.BEFORE_IMPORT
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_FAILED
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_ONGOING
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_START_FAILED
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_SUCCESSFUL
 import com.seiberl.protrackreader.ui.jumpimport.models.JumpFileReader
+import com.seiberl.protrackreader.ui.jumpimport.models.JumpImporter
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +28,8 @@ typealias Navigation = () -> Unit
 
 data class ImportUiState(
     val importState: ImportState = ImportState.BEFORE_IMPORT,
-    val currentJumpNumber: Int = 0
+    val currentJumpNumber: Int = 0,
+    val importedJumps: Int = 0
 )
 
 private const val TAG = "JumpImportViewModel"
@@ -32,17 +38,23 @@ private const val TAG = "JumpImportViewModel"
 class JumpImportViewModel @Inject constructor(
     private val repository: JumpRepository,
     private val jumpFileReader: JumpFileReader,
+    private val jumpImporter: JumpImporter,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val recordedJumps = mutableListOf<Int>()
     private val _uiState = MutableStateFlow(ImportUiState())
 
-    private val isDuplicatePredicate: ((Jump) -> Boolean) = { jump ->
-        recordedJumps.contains(jump.number)
+    private val isDuplicatePredicate: ((Int) -> Boolean) = { jumpNr ->
+        recordedJumps.contains(jumpNr)
     }
-    private val isNewPredicate: ((Jump) -> Boolean) = { jump ->
-        isDuplicatePredicate.invoke(jump).not()
+    private val isNewPredicate: ((Int) -> Boolean) = { jumpNr ->
+        isDuplicatePredicate.invoke(jumpNr).not()
+    }
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.e(TAG, "Exception: $exception")
+        _uiState.update { it.copy(importState = IMPORT_FAILED) }
     }
 
     val uiState: StateFlow<ImportUiState> = _uiState.asStateFlow()
@@ -51,10 +63,22 @@ class JumpImportViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(ioDispatcher) {
-            repository.observeJumpNumbers().distinctUntilChanged().collect { updatedJumps ->
-                recordedJumps.clear()
-                recordedJumps.addAll(updatedJumps)
-            }
+            async {
+                repository.observeJumpNumbers().distinctUntilChanged().collect { updatedJumps ->
+                    recordedJumps.clear()
+                    recordedJumps.addAll(updatedJumps)
+                }
+            }.start()
+            async {
+                jumpImporter.currentJumpImport.collect { jumpNr ->
+                    _uiState.update {
+                        it.copy(
+                            currentJumpNumber = jumpNr,
+                            importedJumps = it.importedJumps.inc()
+                        )
+                    }
+                }
+            }.start()
         }
     }
 
@@ -62,7 +86,7 @@ class JumpImportViewModel @Inject constructor(
         Log.d(TAG, "Button Click: Import")
         val success = jumpFileReader.findProtrackVolume()
         if (!success) {
-//            onShowNextActivity()
+            _uiState.update { it.copy(importState = IMPORT_START_FAILED) }
             return
         }
 
@@ -71,30 +95,38 @@ class JumpImportViewModel @Inject constructor(
 
         viewModelScope.launch(ioDispatcher) {
             Log.d(TAG, "Starting import.")
-            importJumps()
-        }.invokeOnCompletion {
-            onShowNextActivity() // todo show finished screen - either retry or finish
+            _uiState.update { it.copy(importState = IMPORT_ONGOING) }
+            launch(exceptionHandler) {
+                importJumps(jumpNumbers)
+                _uiState.update { it.copy(importState = IMPORT_SUCCESSFUL) }
+            }
         }
     }
 
 
-    private fun importJumps(overrideDuplicates: Boolean = false) {
-        val recordedJumpData = jumpFileReader.readStoredJumps()
-
+    private fun importJumps(jumpNumbers: List<Int>, overrideDuplicates: Boolean = false) {
         val (newJumps, duplicateJumps) = if (overrideDuplicates) {
             // Split new jumps up in jumps to simply import and jumps that should be updated.
-            val newJumps = recordedJumpData.filter(isNewPredicate)
-            val duplicateJumps = recordedJumpData.filter(isDuplicatePredicate)
+            val newJumps = jumpNumbers.filter(isNewPredicate)
+            val duplicateJumps = jumpNumbers.filter(isDuplicatePredicate)
             newJumps to duplicateJumps
         } else {
-            val newJumps = recordedJumpData.filter(isNewPredicate)
+            // Ignore all duplicates - just import new jumps
+            val newJumps = jumpNumbers.filter(isNewPredicate)
             newJumps to emptyList()
         }
 
-        repository.insertJumpNumbers(newJumps, duplicateJumps)
+        val sortedNewJumps = newJumps.sorted()
+        val sortedDuplicatedJumps = duplicateJumps.sorted()
+
+        jumpImporter.importJumps(sortedNewJumps, sortedDuplicatedJumps)
     }
 
     fun onCancelClick() {
+        onShowNextActivity()
+    }
+
+    fun onContinueClick() {
         onShowNextActivity()
     }
 }
