@@ -32,6 +32,13 @@ class JumpListViewModel @Inject constructor(
     lateinit var fabClickEvent: () -> Unit
     lateinit var onRequestPermission: () -> Unit
 
+    private var requestedPermission: Boolean = false
+    private val storagePermissionGranted: Boolean
+        get() = Environment.isExternalStorageManager()
+
+    val shouldRestartApp: Boolean
+        get() = requestedPermission && storagePermissionGranted
+
     init {
         viewModelScope.launch(ioDispatcher) {
             // Get and observe all jumps from database
@@ -43,7 +50,7 @@ class JumpListViewModel @Inject constructor(
         }
 
         // Check if we have permission to read external storage (= Protrack II)
-        if (!Environment.isExternalStorageManager()) {
+        if (!storagePermissionGranted) {
             _uiState.update { it.copy(showPermissionDialog = true) }
         }
     }
@@ -58,6 +65,7 @@ class JumpListViewModel @Inject constructor(
 
     fun onPermissionDialogConfirmed() {
         _uiState.update { it.copy(showPermissionDialog = false) }
+        requestedPermission = true
         onRequestPermission()
     }
 }
