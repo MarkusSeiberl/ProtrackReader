@@ -66,7 +66,7 @@ fun PermissionDialog(viewModel: JumpListViewModel) {
 
 
                         Text(
-                            text = stringResource(R.string.permissions_dialog_description),
+                            text = stringResource(R.string.permission_dialog_description),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Spacer(modifier = Modifier.height(24.dp))
@@ -76,13 +76,13 @@ fun PermissionDialog(viewModel: JumpListViewModel) {
                             TextButton(
                                 onClick = { viewModel.onPermissionDialogDismiss() },
                             ) {
-                                Text("Cancel")
+                                Text(stringResource(R.string.permission_dialog_cancel))
                             }
 
                             TextButton(
                                 onClick = { viewModel.onPermissionDialogConfirmed() },
                             ) {
-                                Text("Proceed")
+                                Text(stringResource(R.string.button_action_proceed))
                             }
 
                         }

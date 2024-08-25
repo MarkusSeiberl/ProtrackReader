@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="button_action_cancel">Abbrechen</string>
+    <string name="button_action_proceed">Weiter</string>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
     <string name="jumpdetail_info_title_deployment">Öffnungshöhe</string>
@@ -13,7 +15,7 @@
     <string name="jumpimport_title">Protrack2 erkannt</string>
     <string name="jumpimport_body_description">Importieren Sie Ihre vom Protrack2 aufgezeichneten Sprünge. Duplikate werden ignoriert.</string>
     <string name="jumpimport_button_import">Importieren</string>
-    <string name="jumpimport_button_cancel">Abbrechen</string>
+    <string name="jumpimport_button_cancel">@string/button_action_cancel</string>
 
     <string name="jumplist_title">Deine Sprünge</string>
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>
@@ -25,5 +27,7 @@
     <string name="navigation_profile_label">Profil</string>
 
     <string name="permission_dialog_title">Zugriffsberechtigung</string>
-    <string name="permissions_dialog_description">"Die ProtrackReader App braucht die Dateizugriffsberechtigung. Bestätigen Sie diese bitte in den Einstellungen."</string>
+    <string name="permission_dialog_description">"Die ProtrackReader App braucht die Dateizugriffsberechtigung. Bestätigen Sie diese bitte in den Einstellungen."</string>
+    <string name="permission_dialog_cancel">@string/button_action_cancel</string>
+    <string name="permission_dialog_proceed">@string/button_action_proceed</string>
 </resources>
