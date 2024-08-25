@@ -89,7 +89,13 @@ fun ScrollContent(
 
     val uiState: JumpListUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    PermissionDialog(viewModel)
+    if (uiState.showPermissionDialog) {
+        PermissionDialog(
+            viewModel::onPermissionDialogConfirmed,
+            viewModel::onPermissionDialogDismiss,
+            viewModel::onPermissionDialogDismiss
+        )
+    }
 
     Column(
         modifier = Modifier

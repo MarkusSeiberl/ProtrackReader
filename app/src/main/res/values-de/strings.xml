@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="button_action_cancel">Abbrechen</string>
+    <string name="button_action_abort">Abbrechen</string>
     <string name="button_action_proceed">Weiter</string>
+    <string name="button_action_continue">Weiter</string>
+    <string name="button_action_retry">Wiederholen</string>
+    <string name="button_action_finish">Beenden</string>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
     <string name="jumpdetail_info_title_deployment">Öffnungshöhe</string>
@@ -16,6 +20,16 @@
     <string name="jumpimport_body_description">Importieren Sie Ihre vom Protrack2 aufgezeichneten Sprünge. Duplikate werden ignoriert.</string>
     <string name="jumpimport_button_import">Importieren</string>
     <string name="jumpimport_button_cancel">@string/button_action_cancel</string>
+    <string name="jumpimport_button_continue">@string/button_action_continue</string>
+    <string name="jumpimport_button_retry">@string/button_action_retry</string>
+    <string name="jumpimport_button_finish">@string/button_action_finish</string>
+    <string name="jumpimport_button_abort">@string/button_action_abort</string>
+    <string name="jumpimport_imported_jumps">%1$s Sprünge importiert.</string>
+    <string name="jumpimport_import_failed">Importieren fehlgeschlagen!</string>
+    <string name="jumpimport_permission_denied_explanation">Ohne Berechtigung kann die App keine Sprünge importieren. Bitte den Zugriff in den Einstellungen aktivieren.</string>
+    <string name="jumpimport_waiting_protrack">Warten darauf, dass Protrack2 einsatzbereit ist …</string>
+    <string name="jumpimport_protrack2_access_failed">Zugriff auf den Protrack-2-Speicher fehlgeschlagen.</string>
+    <string name="jumpimport_protrack2_access_failed_restart">Zugriff auf den Protrack-2-Speicher fehlgeschlagen. Bitte starten Sie die App neu und verbinden Sie Protrack 2 erneut.</string>
 
     <string name="jumplist_title">Deine Sprünge</string>
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>

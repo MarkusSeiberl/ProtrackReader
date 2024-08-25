@@ -28,69 +28,58 @@ import com.seiberl.protrackreader.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PermissionDialog(viewModel: JumpListViewModel) {
+fun PermissionDialog(onConfirm: () -> Unit, onDeny: () -> Unit, onDismiss: () -> Unit) {
 
-    val uiState: JumpListUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    BasicAlertDialog(
+        onDismissRequest = onDismiss,
+    ) {
+        Surface(
+            modifier = Modifier
+                .wrapContentWidth()
+                .wrapContentHeight(),
+            shape = MaterialTheme.shapes.large,
+            tonalElevation = AlertDialogDefaults.TonalElevation
+        ) {
+            Column(modifier = Modifier.padding(24.dp)) {
 
-    when {
-        uiState.showPermissionDialog -> {
-            BasicAlertDialog(
-                onDismissRequest = { viewModel.onPermissionDialogDismiss() },
-            ) {
-                Surface(
+                Icon(
+                    modifier =
+                    Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.folder_supervised),
+                    contentDescription = null
+                )
+
+                Text(
                     modifier = Modifier
-                        .wrapContentWidth()
-                        .wrapContentHeight(),
-                    shape = MaterialTheme.shapes.large,
-                    tonalElevation = AlertDialogDefaults.TonalElevation
-                ) {
-                    Column(modifier = Modifier.padding(24.dp)) {
+                        .align(Alignment.CenterHorizontally)
+                        .padding(0.dp, 16.dp),
+                    text = stringResource(R.string.permission_dialog_title),
+                    style = MaterialTheme.typography.titleLarge
+                )
 
-                        Icon(
-                            modifier =
-                            Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .size(24.dp),
-                            painter = painterResource(id = R.drawable.folder_supervised),
-                            contentDescription = null
-                        )
+                Text(
+                    text = stringResource(R.string.permission_dialog_description),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(24.dp))
 
 
-                        Text(
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .padding(0.dp, 16.dp),
-                            text = stringResource(R.string.permission_dialog_title),
-                            style = MaterialTheme.typography.titleLarge
-                        )
+                Row(modifier = Modifier.align(Alignment.End)) {
+                    TextButton(
+                        onClick = onDeny,
+                    ) {
+                        Text(stringResource(R.string.permission_dialog_cancel))
+                    }
 
-
-                        Text(
-                            text = stringResource(R.string.permission_dialog_description),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-
-
-                        Row(modifier = Modifier.align(Alignment.End)) {
-                            TextButton(
-                                onClick = { viewModel.onPermissionDialogDismiss() },
-                            ) {
-                                Text(stringResource(R.string.permission_dialog_cancel))
-                            }
-
-                            TextButton(
-                                onClick = { viewModel.onPermissionDialogConfirmed() },
-                            ) {
-                                Text(stringResource(R.string.button_action_proceed))
-                            }
-
-                        }
+                    TextButton(
+                        onClick = onConfirm,
+                    ) {
+                        Text(stringResource(R.string.button_action_proceed))
                     }
                 }
             }
         }
     }
-
-
 }

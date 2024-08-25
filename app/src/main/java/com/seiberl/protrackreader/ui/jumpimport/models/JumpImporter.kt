@@ -25,6 +25,9 @@ class JumpImporter @Inject constructor(
     private val _currentJumpImport: MutableStateFlow<Int> = MutableStateFlow(-1)
     val currentJumpImport: StateFlow<Int> = _currentJumpImport
 
+    private val _jumpImportCount: MutableStateFlow<Int> = MutableStateFlow(0)
+    val jumpImportCount: StateFlow<Int> = _jumpImportCount
+
     fun importJumps(newJumps: List<Int>, duplicateJumps: List<Int>) {
         overrideJumps(duplicateJumps)
         importNewJumps(newJumps)
@@ -40,8 +43,10 @@ class JumpImporter @Inject constructor(
             _currentJumpImport.update { jumpNr }
             val jumpFileContent = jumpFileReader.readStoredJump(jumpNr)
 
-            jumpRepository.insertJump(jumpFileContent.jump)
-            storeJumpFile(jumpFileContent) // TODO do someting with the result
+            if (storeJumpFile(jumpFileContent)) {
+                jumpRepository.insertJump(jumpFileContent.jump)
+                _jumpImportCount.update { it + 1 }
+            }
         }
     }
 
@@ -59,6 +64,4 @@ class JumpImporter @Inject constructor(
 
         return true
     }
-
-
 }

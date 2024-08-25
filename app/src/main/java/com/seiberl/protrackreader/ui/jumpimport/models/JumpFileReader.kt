@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
 import android.util.Log
+import com.seiberl.protrackreader.ui.jumpimport.models.exceptions.VolumeAccessException
 import com.seiberl.protrackreader.ui.jumpimport.models.jumpfile.JumpFile
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -25,18 +26,24 @@ class JumpFileReader @Inject constructor(
     fun findProtrackVolume(): Boolean {
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         val volumes = storageManager.storageVolumes
-        val protrackVolume =
+        val storageVolume =
             volumes.find { it.getDescription(context).contains(PROTRACK_VOLUME_DESCRIPTION) }
 
-        if (protrackVolume != null) {
-            Log.d(TAG, "Found protrack volume: ${protrackVolume.getDescription(context)}")
-            this.protrackVolume = protrackVolume
-            return true
+        if (storageVolume == null || storageVolume.directory == null) {
+            Log.w(TAG, "Could not find protrack volume")
+            return false
         }
 
-        Log.w(TAG, "Could not find protrack volume")
+        Log.d(TAG, "Found protrack volume: ${storageVolume.getDescription(context)}")
 
-        return false
+        if (storageVolume.directory!!.listFiles()?.isEmpty() == true) {
+            Log.w(TAG, "Protrack volume is empty. Cannot import jumps.")
+            throw VolumeAccessException("Protrack volume is empty. Cannot import jumps.")
+
+        } else {
+            this.protrackVolume = storageVolume
+            return true
+        }
     }
 
     fun readStoredJumpNumbers(): List<Int> {

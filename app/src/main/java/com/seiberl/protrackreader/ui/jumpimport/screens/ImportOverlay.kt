@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -103,7 +104,7 @@ fun ImportSuccessfulOverlay(
 
         Spacer(modifier = Modifier.size(24.dp))
 
-        Text(text = "Imported ${uiState.importedJumps} jumps.")
+        Text(text = stringResource(R.string.jumpimport_imported_jumps, uiState.importedJumps))
 
         Spacer(modifier = Modifier.size(24.dp))
 
@@ -112,7 +113,7 @@ fun ImportSuccessfulOverlay(
             onClick = { viewModel.onContinueClick() }
         ) {
             Text(
-                text = "Continue",
+                text = stringResource(id = R.string.button_action_continue),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
             )
@@ -126,31 +127,28 @@ fun ImportFailedOverlay(
     modifier: Modifier = Modifier,
     viewModel: JumpImportViewModel
 ) {
-
-    val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     Column(modifier = modifier) {
 
-        CircularProgressIndicator(
+        Icon(
             modifier = Modifier
                 .size(64.dp)
                 .align(Alignment.CenterHorizontally),
-            progress = { 100f },
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            painter = painterResource(id = R.drawable.error),
+            tint = MaterialTheme.colorScheme.error,
+            contentDescription = null
         )
 
         Spacer(modifier = Modifier.size(24.dp))
 
-        Text(text = "Import failed!", color = MaterialTheme.colorScheme.error)
+        Text(text = stringResource(R.string.jumpimport_import_failed), color = MaterialTheme.colorScheme.error)
 
         Spacer(modifier = Modifier.size(24.dp))
 
         Button(
-            onClick = {  }
+            onClick = { viewModel.onImportClick() }
         ) {
             Text(
-                text = "Retry",
+                text = stringResource(id = R.string.jumpimport_button_retry),
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
             )

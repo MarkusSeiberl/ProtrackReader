@@ -2,7 +2,11 @@
     <string name="app_name" translatable="false">ProtrackReader</string>
 
     <string name="button_action_cancel">Cancel</string>
+    <string name="button_action_abort">Abort</string>
     <string name="button_action_proceed">Proceed</string>
+    <string name="button_action_continue">Continue</string>
+    <string name="button_action_retry">Retry</string>
+    <string name="button_action_finish">Finish</string>
 
     <string name="title_activity_jump_import" translatable="false">JumpImportActivity</string>
     <string name="jumpdetail_info_content_meter" translatable="false">%1$s m</string>
@@ -21,6 +25,16 @@
     <string name="jumpimport_body_description">Import your recorded jumps from the Protrack2. Duplicates will be ignored.</string>
     <string name="jumpimport_button_import">Import</string>
     <string name="jumpimport_button_cancel">@string/button_action_cancel</string>
+    <string name="jumpimport_button_continue">@string/button_action_continue</string>
+    <string name="jumpimport_button_retry">@string/button_action_retry</string>
+    <string name="jumpimport_button_finish">@string/button_action_finish</string>
+    <string name="jumpimport_button_abort">@string/button_action_abort</string>
+    <string name="jumpimport_imported_jumps">Imported %1$s jumps.</string>
+    <string name="jumpimport_import_failed">Import failed!</string>
+    <string name="jumpimport_permission_denied_explanation">Cannot access Protrack2 without permission. Please grant the permission in the settings.</string>
+    <string name="jumpimport_waiting_protrack">Waiting for Protrack 2 to come online …</string>
+    <string name="jumpimport_protrack2_access_failed">Failed to access the Protrack 2 storage.</string>
+    <string name="jumpimport_protrack2_access_failed_restart">Failed to access the Protrack 2 storage. Please restart the App and reconnect the Protrack 2.</string>
 
     <string name="jumplist_title">Your Jumps</string>
     <string name="jumplist_button_description">Import jump button</string>

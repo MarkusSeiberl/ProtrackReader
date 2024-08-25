@@ -18,9 +18,8 @@ class JumpRepository @Inject constructor(
         updateJumps(duplicateJumpData)
     }
 
-    fun insertJump(recordedJumpData: Jump) {
-        jumpDao.insert(recordedJumpData)
-    }
+    fun insertJump(recordedJumpData: Jump) = jumpDao.insert(recordedJumpData)
+
 
     private fun updateJumps(incomingJumps: List<Jump>) {
         val outdatedJumps = jumpDao.getFilteredJumps(incomingJumps.map { it.number })

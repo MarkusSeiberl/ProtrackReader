@@ -15,21 +15,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seiberl.protrackreader.ui.home.PermissionDialog
 import com.seiberl.protrackreader.ui.jumpimport.ImportUiState
 import com.seiberl.protrackreader.ui.jumpimport.JumpImportViewModel
 import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_FAILED
 import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_ONGOING
 import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.IMPORT_SUCCESSFUL
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.PERMISSION_DENIED
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.PERMISSION_REQUIRED
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.SEARCHING_VOLUME
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.SEARCHING_VOLUME_FAILED
+import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.VOLUME_EMPTY
 
 @Composable
 fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeClass) {
 
     val uiState: ImportUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val shouldShowOverlay =
-        listOf(IMPORT_ONGOING, IMPORT_SUCCESSFUL, IMPORT_FAILED).contains(uiState.importState)
+    val shouldBlurContent = listOf(
+        PERMISSION_DENIED,
+        SEARCHING_VOLUME,
+        SEARCHING_VOLUME_FAILED,
+        VOLUME_EMPTY,
+        IMPORT_ONGOING,
+        IMPORT_SUCCESSFUL,
+        IMPORT_FAILED
+    ).contains(uiState.importState)
 
-    val blur = if (shouldShowOverlay) 8.dp else 0.dp
+    val blur = if (shouldBlurContent) 8.dp else 0.dp
 
     when (windowsWidth) {
         WindowWidthSizeClass.Expanded -> Row(
@@ -78,7 +91,31 @@ fun ImportScreen(viewModel: JumpImportViewModel, windowsWidth: WindowWidthSizeCl
         }
     }
 
-    if (shouldShowOverlay) {
+    if (uiState.importState == PERMISSION_REQUIRED) {
+        PermissionDialog(
+            viewModel::onPermissionDialogConfirmed,
+            viewModel::onPermissionDialogDismiss,
+            viewModel::onPermissionDialogDismiss
+        )
+    }
+
+    val shouldShowImportOverlay = listOf(
+        IMPORT_ONGOING,
+        IMPORT_SUCCESSFUL,
+        IMPORT_FAILED
+    ).contains(uiState.importState)
+
+    val shouldShowVolumeOverlay = listOf(
+        SEARCHING_VOLUME,
+        SEARCHING_VOLUME_FAILED,
+        VOLUME_EMPTY,
+    ).contains(uiState.importState)
+
+    if (shouldShowImportOverlay) {
         ImportOverlay(viewModel)
+    } else if (shouldShowVolumeOverlay) {
+        VolumeOverlay(viewModel)
+    } else if (uiState.importState == PERMISSION_DENIED) {
+        PermissionDeniedOverlay(viewModel)
     }
 }
