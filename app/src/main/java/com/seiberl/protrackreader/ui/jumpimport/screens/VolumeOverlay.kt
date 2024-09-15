@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,6 +41,7 @@ fun VolumeOverlay(viewModel: JumpImportViewModel) {
     Box(modifier = Modifier
         .alpha(0.9f)
         .background(MaterialTheme.colorScheme.background)
+        .padding(24.dp, 0.dp)
         .fillMaxSize()
     ) {
 
@@ -200,7 +202,7 @@ fun VolumeEmptyOverlay(
                 onClick = { viewModel.restartApp() }
             ) {
                 Text(
-                    text = "Restart",
+                    text = stringResource(id = R.string.jumpimport_button_restart),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )

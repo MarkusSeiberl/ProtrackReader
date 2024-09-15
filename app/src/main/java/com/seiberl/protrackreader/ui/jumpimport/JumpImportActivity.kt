@@ -29,6 +29,7 @@ class JumpImportActivity : ComponentActivity() {
 
         viewModel.onShowNextActivity = ::onShowNextActivity
         viewModel.onRequestPermission = ::onRequestPermission
+        viewModel.onRestartApp = ::restartApp
 
         setContent {
             ProtrackReaderTheme {
@@ -36,6 +37,11 @@ class JumpImportActivity : ComponentActivity() {
                 ImportScreen(viewModel, windowSize.widthSizeClass)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateStoragePermission()
     }
 
     private fun onRequestPermission() {
@@ -49,5 +55,15 @@ class JumpImportActivity : ComponentActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun restartApp() {
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            Log.d(TAG, "User granted permission. Restarting App for permissions to take effect.")
+            val mainIntent = Intent.makeRestartActivityTask(intent.component)
+            startActivity(mainIntent)
+            Runtime.getRuntime().exit(0)
+        }
     }
 }

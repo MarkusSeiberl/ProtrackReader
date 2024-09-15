@@ -7,6 +7,7 @@
     <string name="button_action_continue">Continue</string>
     <string name="button_action_retry">Retry</string>
     <string name="button_action_finish">Finish</string>
+    <string name="button_action_restart">Restart</string>
 
     <string name="title_activity_jump_import" translatable="false">JumpImportActivity</string>
     <string name="jumpdetail_info_content_meter" translatable="false">%1$s m</string>
@@ -29,6 +30,7 @@
     <string name="jumpimport_button_retry">@string/button_action_retry</string>
     <string name="jumpimport_button_finish">@string/button_action_finish</string>
     <string name="jumpimport_button_abort">@string/button_action_abort</string>
+    <string name="jumpimport_button_restart">@string/button_action_restart</string>
     <string name="jumpimport_imported_jumps">Imported %1$s jumps.</string>
     <string name="jumpimport_import_failed">Import failed!</string>
     <string name="jumpimport_permission_denied_explanation">Cannot access Protrack2 without permission. Please grant the permission in the settings.</string>

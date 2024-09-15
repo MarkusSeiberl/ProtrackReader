@@ -80,6 +80,7 @@ class JumpImportViewModel @Inject constructor(
 
     lateinit var onRequestPermission: Navigation
     lateinit var onShowNextActivity: Navigation
+    lateinit var onRestartApp: Navigation
 
     init {
         viewModelScope.launch(ioDispatcher) {
@@ -101,12 +102,7 @@ class JumpImportViewModel @Inject constructor(
             }.start()
         }
 
-        // Check if we have permission to read external storage (= Protrack II)
-        if (!storagePermissionGranted) {
-            _uiState.update { it.copy(importState = PERMISSION_REQUIRED) }
-        } else {
-            startVolumeDetection()
-        }
+        updateStoragePermission()
     }
 
     fun onImportClick() {
@@ -156,17 +152,9 @@ class JumpImportViewModel @Inject constructor(
         jumpImporter.importJumps(sortedNewJumps, sortedDuplicatedJumps)
     }
 
-    fun onCancelClick() {
-        onShowNextActivity()
-    }
-
-    fun onContinueClick() {
-        onShowNextActivity()
-    }
-
-    fun onAbortClicked() {
-        onShowNextActivity()
-    }
+    fun onCancelClick() = onShowNextActivity()
+    fun onContinueClick() = onShowNextActivity()
+    fun onAbortClicked() = onShowNextActivity()
 
     fun startVolumeDetection() {
         viewModelScope.launch(volumeExceptionHandler) {
@@ -187,8 +175,15 @@ class JumpImportViewModel @Inject constructor(
         }
     }
 
-    fun restartApp() {
-        TODO("Not yet implemented")
-    }
+    fun restartApp() = onRestartApp()
 
+    fun updateStoragePermission() {
+        // Check if we have permission to read external storage (= Protrack II)
+        if (!storagePermissionGranted) {
+            _uiState.update { it.copy(importState = PERMISSION_REQUIRED) }
+        } else {
+            _uiState.update { it.copy(importState = IMPORT_READY) }
+            startVolumeDetection()
+        }
+    }
 }

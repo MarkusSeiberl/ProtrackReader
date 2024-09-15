@@ -36,7 +36,8 @@ class JumpFileReader @Inject constructor(
 
         Log.d(TAG, "Found protrack volume: ${storageVolume.getDescription(context)}")
 
-        if (storageVolume.directory!!.listFiles()?.isEmpty() == true) {
+        val storageFiles = storageVolume.directory!!.listFiles()
+        if (storageFiles == null || storageFiles.isEmpty()) {
             Log.w(TAG, "Protrack volume is empty. Cannot import jumps.")
             throw VolumeAccessException("Protrack volume is empty. Cannot import jumps.")
 

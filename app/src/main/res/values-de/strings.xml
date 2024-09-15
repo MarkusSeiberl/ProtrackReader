@@ -6,6 +6,7 @@
     <string name="button_action_continue">Weiter</string>
     <string name="button_action_retry">Wiederholen</string>
     <string name="button_action_finish">Beenden</string>
+    <string name="button_action_restart">Neustart</string>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
     <string name="jumpdetail_info_title_deployment">Öffnungshöhe</string>
@@ -24,6 +25,7 @@
     <string name="jumpimport_button_retry">@string/button_action_retry</string>
     <string name="jumpimport_button_finish">@string/button_action_finish</string>
     <string name="jumpimport_button_abort">@string/button_action_abort</string>
+    <string name="jumpimport_button_restart">@string/button_action_restart</string>
     <string name="jumpimport_imported_jumps">%1$s Sprünge importiert.</string>
     <string name="jumpimport_import_failed">Importieren fehlgeschlagen!</string>
     <string name="jumpimport_permission_denied_explanation">Ohne Berechtigung kann die App keine Sprünge importieren. Bitte den Zugriff in den Einstellungen aktivieren.</string>
