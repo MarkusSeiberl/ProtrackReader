@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 data class JumpListUiState(
     val jumps: List<JumpMetaData> = emptyList(),
+    val selectedJumps: List<Int> = emptyList(),
     val showPermissionDialog: Boolean = false
 )
 
@@ -52,6 +53,18 @@ class JumpListViewModel @Inject constructor(
         // Check if we have permission to read external storage (= Protrack II)
         if (!storagePermissionGranted) {
             _uiState.update { it.copy(showPermissionDialog = true) }
+        }
+    }
+
+    fun onJumpSelected(jumpNumber: Int) {
+        if (_uiState.value.selectedJumps.contains(jumpNumber)) {
+            _uiState.update { oldState ->
+                oldState.copy(selectedJumps = oldState.selectedJumps.filter { it != jumpNumber })
+            }
+        } else {
+            _uiState.update { oldState ->
+                oldState.copy(selectedJumps = oldState.selectedJumps + jumpNumber)
+            }
         }
     }
 

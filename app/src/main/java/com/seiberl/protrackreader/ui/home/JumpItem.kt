@@ -1,6 +1,8 @@
 package com.seiberl.protrackreader.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,21 +25,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
+import com.seiberl.protrackreader.ui.jumpimport.Navigation
+import com.seiberl.protrackreader.ui.theme.inversePrimaryLight
+import com.seiberl.protrackreader.ui.theme.onPrimaryLight
+import com.seiberl.protrackreader.ui.theme.primaryLight
+import com.seiberl.protrackreader.ui.theme.surfaceContainerLight
+import com.seiberl.protrackreader.ui.theme.surfaceVariantLight
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun JumpItem(jump: JumpMetaData) {
+fun JumpItem(jump: JumpMetaData, selected: Boolean, onSelected: (Int) -> Unit) {
+
+    val backgroundColor = if (selected) {
+        surfaceVariantLight
+    } else {
+        surfaceContainerLight
+    }
 
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(backgroundColor)
             .height(IntrinsicSize.Min)
             .padding(16.dp, 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        JumpNumber(number = jump.number)
+        JumpNumber(number = jump.number, onSelected)
 
         Column(
             modifier = Modifier,
@@ -89,15 +103,18 @@ fun JumpItem(jump: JumpMetaData) {
 
 
 @Composable
-fun JumpNumber(number: Int) {
-    Box(modifier = Modifier.padding(0.dp, 0.dp, 16.dp, 0.dp)
-        .clip(RoundedCornerShape(10.dp))
-        .background(Color.LightGray)
+fun JumpNumber(number: Int, onSelected: (Int) -> Unit) {
+    Box(modifier = Modifier
+        .padding(0.dp, 0.dp, 16.dp, 0.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(primaryLight)
+        .clickable { onSelected(number) }
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
             text = "$number",
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineLarge,
+            color = onPrimaryLight
         )
     }
 }
