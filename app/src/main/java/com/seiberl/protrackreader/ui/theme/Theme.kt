@@ -279,8 +279,11 @@ fun ProtrackReaderTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            val windowInsetsController = WindowCompat.getInsetsController(window, view)
+            windowInsetsController.isAppearanceLightStatusBars = !darkTheme
+            windowInsetsController.isAppearanceLightNavigationBars = !darkTheme
+            window.statusBarColor = colorScheme.surfaceBright.toArgb()
+            window.navigationBarColor = colorScheme.surfaceContainer.toArgb()
         }
     }
 

@@ -37,6 +37,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.seiberl.protrackreader.R
 import com.seiberl.protrackreader.ui.Screen
+import com.seiberl.protrackreader.ui.theme.surfaceBrightLight
+import com.seiberl.protrackreader.ui.theme.surfaceContainerLight
 import com.seiberl.protrackreader.ui.theme.surfaceLight
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +56,7 @@ fun JumpListScreen(
         topBar = {
             MediumTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.surfaceBright,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 scrollBehavior = scrollBehavior,
@@ -100,7 +102,7 @@ fun ScrollContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(surfaceLight)
+            .background(surfaceBrightLight)
             .padding(padding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -115,7 +117,8 @@ fun ScrollContent(
                         navController.navigate(Screen.JumpDetailScreen(jump.number))
                     }
                 ) {
-                    JumpItem(jump)
+                    val isSelected = uiState.selectedJumps.contains(jump.number)
+                    JumpItem(jump, isSelected, viewModel::onJumpSelected)
                 }
             }
         }
