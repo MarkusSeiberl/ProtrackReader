@@ -108,7 +108,7 @@ fun ScrollContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LazyColumn {
-            items(uiState.jumps) { jump ->
+            items(uiState.jumps, key = {jump -> jump.number}) { jump ->
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp)
