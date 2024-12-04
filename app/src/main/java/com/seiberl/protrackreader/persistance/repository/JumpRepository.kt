@@ -1,5 +1,6 @@
 package com.seiberl.protrackreader.persistance.repository
 
+import com.seiberl.protrackreader.persistance.JumpFileManager
 import com.seiberl.protrackreader.persistance.dao.JumpDao
 import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
@@ -7,7 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class JumpRepository @Inject constructor(
-    private val jumpDao: JumpDao
+    private val jumpDao: JumpDao,
+    private val jumpFileManager: JumpFileManager
 ) {
     fun observeJumpMetaData(): Flow<List<JumpMetaData>> = jumpDao.observeJumpMetaData()
 
@@ -28,5 +30,13 @@ class JumpRepository @Inject constructor(
             incomingJump.copy(id = outdatedJump!!.id)
         }
         jumpDao.update(updatedJumps)
+    }
+
+    fun removeJumps(selectedJumps: List<Int>) {
+        selectedJumps.forEach { jumpNumber ->
+            if (jumpFileManager.deleteJumpFile(jumpNumber)) {
+                jumpDao.deleteByNumber(jumpNumber)
+            }
+        }
     }
 }

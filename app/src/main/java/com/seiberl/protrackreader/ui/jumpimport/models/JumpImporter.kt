@@ -2,6 +2,7 @@ package com.seiberl.protrackreader.ui.jumpimport.models
 
 import android.content.Context
 import android.util.Log
+import com.seiberl.protrackreader.persistance.JumpFileManager
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
 import com.seiberl.protrackreader.ui.jumpimport.models.jumpfile.JumpFile
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,6 +18,7 @@ private const val TAG = "JumpImporter"
 class JumpImporter @Inject constructor(
     private val jumpRepository: JumpRepository,
     private val jumpFileReader: JumpFileReader,
+    private val jumpFileManager: JumpFileManager,
     @ApplicationContext context: Context
 ) {
 
@@ -43,25 +45,10 @@ class JumpImporter @Inject constructor(
             _currentJumpImport.update { jumpNr }
             val jumpFileContent = jumpFileReader.readStoredJump(jumpNr)
 
-            if (storeJumpFile(jumpFileContent)) {
+            if (jumpFileManager.storeJumpFile(jumpFileContent)) {
                 jumpRepository.insertJump(jumpFileContent.jump)
                 _jumpImportCount.update { it + 1 }
             }
         }
-    }
-
-    private fun storeJumpFile(jumpFileContent: JumpFile): Boolean {
-        val jumpFile = File(externalFilesDir, "${jumpFileContent.jump.number}.txt")
-
-        if (jumpFile.exists() && jumpFile.isFile) {
-            return false // File already exists
-        }
-        jumpFile.createNewFile()
-
-        for (jumpFileLine in jumpFileContent.fileContent) {
-            jumpFile.appendText(jumpFileLine)
-        }
-
-        return true
     }
 }

@@ -81,4 +81,11 @@ class JumpListViewModel @Inject constructor(
         requestedPermission = true
         onRequestPermission()
     }
+
+    fun deleteSelectedJumps() {
+        viewModelScope.launch(ioDispatcher) {
+            repository.removeJumps(uiState.value.selectedJumps)
+            _uiState.update { it.copy(selectedJumps = emptyList()) }
+        }
+    }
 }
