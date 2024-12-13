@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,7 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -29,6 +33,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,10 +45,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.seiberl.protrackreader.R
+import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import com.seiberl.protrackreader.ui.Screen
 import com.seiberl.protrackreader.ui.theme.surfaceBrightLight
-import com.seiberl.protrackreader.ui.theme.surfaceContainerLight
-import com.seiberl.protrackreader.ui.theme.surfaceLight
+import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,6 +68,8 @@ fun JumpListScreen(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+            var showMenu by remember { mutableStateOf(false) }
+
             MediumTopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
@@ -73,7 +85,27 @@ fun JumpListScreen(
                         IconButton(
                             onClick = { viewModel.deleteSelectedJumps() }
                         ) {
-                            Icon(Icons.Filled.Delete, contentDescription = "Delete selected jumps.")
+                            Icon(
+                                Icons.Filled.Delete,
+                                contentDescription =
+                                stringResource(id = R.string.jumplist_delete_icon_description)
+                            )
+                        }
+                    }
+                    IconButton(onClick = { showMenu = !showMenu }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "More",
+                        )
+                        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+                            DropdownMenuItem(
+                                text = { Text("Test") },
+                                onClick = { /*TODO*/ }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Test2") },
+                                onClick = { /*TODO*/ }
+                            )
                         }
                     }
                 }
@@ -123,6 +155,19 @@ fun ScrollContent(
     ) {
         LazyColumn {
             items(uiState.jumps, key = {jump -> jump.number}) { jump ->
+
+                if (jump.isInDifferentMonth(uiState.jumps)) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp, 16.dp, 16.dp, 8.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+                        val formattedDate = formatter.format(Date.from(jump.timestamp))
+                        Text(formattedDate)
+                    }
+                }
+
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -137,4 +182,17 @@ fun ScrollContent(
             }
         }
     }
+}
+
+private fun JumpMetaData.isInDifferentMonth(jumps: List<JumpMetaData>): Boolean {
+    val nextJump = jumps.filter { this.number < it.number }.minByOrNull { it.timestamp }
+    if (nextJump == null) return true
+
+    val currentJumpMonth = timestamp.atZone(ZoneId.systemDefault()).monthValue
+    val currentJumpYear = timestamp.atZone(ZoneId.systemDefault()).year
+
+    val previousJumpMonth = nextJump.timestamp.atZone(ZoneId.systemDefault()).monthValue
+    val previousJumpJumpYear = nextJump.timestamp.atZone(ZoneId.systemDefault()).year
+
+    return previousJumpJumpYear != currentJumpYear || previousJumpMonth != currentJumpMonth
 }

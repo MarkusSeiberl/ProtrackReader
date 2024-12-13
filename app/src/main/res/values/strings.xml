@@ -40,6 +40,7 @@
 
     <string name="jumplist_title">Your Jumps</string>
     <string name="jumplist_button_description">Import jump button</string>
+    <string name="jumplist_delete_icon_description">Delete selected jumps.</string>
 
     <string name="navigation_home_label">Jumps</string>
     <string name="navigation_dropzone_label">DZs</string>

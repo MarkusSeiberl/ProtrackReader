@@ -35,6 +35,7 @@
 
     <string name="jumplist_title">Deine Sprünge</string>
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>
+    <string name="jumplist_delete_icon_description">Lösche ausgewählte Sprünge.</string>
 
 
     <string name="navigation_home_label">Sprünge</string>
