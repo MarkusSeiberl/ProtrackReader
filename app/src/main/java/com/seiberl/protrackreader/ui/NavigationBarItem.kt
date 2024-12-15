@@ -17,20 +17,6 @@ sealed class NavigationBarItem(
         route = Screen.JumpListScreen::class.java.name.toRoute()
     )
 
-    data object Dropzone : NavigationBarItem(
-        screen = Screen.DropzoneScreen,
-        icon = R.drawable.location,
-        title = R.string.navigation_dropzone_label,
-        route = Screen.DropzoneScreen::class.java.name.toRoute()
-    )
-
-    data object Aircraft : NavigationBarItem(
-        screen = Screen.AircraftScreen,
-        icon = R.drawable.aircraft,
-        title = R.string.navigation_aircraft_label,
-        route = Screen.AircraftScreen::class.java.name.toRoute()
-    )
-
     data object Profile : NavigationBarItem(
         screen = Screen.ProfileScreen,
         icon = R.drawable.account_circle,
@@ -42,8 +28,6 @@ sealed class NavigationBarItem(
 
 val NAVIGATION_BAR_ITEMS = listOf(
     NavigationBarItem.Home,
-    NavigationBarItem.Dropzone,
-    NavigationBarItem.Aircraft,
     NavigationBarItem.Profile
 )
 
