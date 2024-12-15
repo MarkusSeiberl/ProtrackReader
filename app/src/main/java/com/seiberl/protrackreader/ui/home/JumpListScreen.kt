@@ -123,10 +123,38 @@ fun JumpListScreen(
         }
     ) { padding ->
 
-        ScrollContent(padding = padding, viewModel, navController = navController)
+        if (uiState.showPermissionDialog) {
+            PermissionDialog(
+                viewModel::onPermissionDialogConfirmed,
+                viewModel::onPermissionDialogDismiss,
+                viewModel::onPermissionDialogDismiss
+            )
+        }
+
+        if (uiState.jumps.isEmpty()) {
+            EmptyListContent(padding = padding)
+        } else {
+            ScrollContent(padding = padding, viewModel, navController = navController)
+        }
 
     }
 }
+
+@Composable
+fun EmptyListContent(padding: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(surfaceBrightLight)
+            .padding(padding)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Connect your phone to a ProTrack device to import jumps.")
+    }
+}
+
 
 @Composable
 fun ScrollContent(
@@ -136,14 +164,6 @@ fun ScrollContent(
 ) {
 
     val uiState: JumpListUiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    if (uiState.showPermissionDialog) {
-        PermissionDialog(
-            viewModel::onPermissionDialogConfirmed,
-            viewModel::onPermissionDialogDismiss,
-            viewModel::onPermissionDialogDismiss
-        )
-    }
 
     Column(
         modifier = Modifier
