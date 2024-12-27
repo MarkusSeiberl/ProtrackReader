@@ -99,11 +99,15 @@ fun JumpListScreen(
                         )
                         DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                             DropdownMenuItem(
-                                text = { Text("Test") },
+                                text = { Text("Set canopy") },
                                 onClick = { /*TODO*/ }
                             )
                             DropdownMenuItem(
-                                text = { Text("Test2") },
+                                text = { Text("Set aircraft") },
+                                onClick = { /*TODO*/ }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Set dropzone") },
                                 onClick = { /*TODO*/ }
                             )
                         }
