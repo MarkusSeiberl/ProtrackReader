@@ -9,6 +9,7 @@
     <string name="button_action_restart">Neustart</string>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
+    <string name="jumpdetail_info_title_statistics">Statistik</string>
     <string name="jumpdetail_info_title_deployment">Öffnungshöhe</string>
     <string name="jumpdetail_info_title_exit">Absprunghöhe</string>
     <string name="jumpdetail_info_title_freefall">Freifallzeit</string>
