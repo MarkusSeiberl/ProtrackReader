@@ -43,13 +43,16 @@
     <string name="jumplist_delete_icon_description">Delete selected jumps.</string>
 
     <string name="navigation_home_label">Jumps</string>
-    <string name="navigation_dropzone_label">DZs</string>
-    <string name="navigation_aircraft_label">Aircraft</string>
     <string name="navigation_profile_label">Profile</string>
 
     <string name="permission_dialog_title">File Access Permission</string>
     <string name="permission_dialog_description">"The ProtrackReader needs permission to access the Protrack II data. Please allow it in the app settings. "</string>
     <string name="permission_dialog_cancel">@string/button_action_cancel</string>
     <string name="permission_dialog_proceed">@string/button_action_proceed</string>
+
+    <string name="profile_username_label">Username</string>
+    <string name="profile_canopy_label">Canopy</string>
+    <string name="profile_dropzone_label">Dropzones</string>
+    <string name="profile_aircraft_label">Aircraft</string>
 
 </resources>

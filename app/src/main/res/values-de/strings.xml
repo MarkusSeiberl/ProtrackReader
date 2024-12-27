@@ -39,12 +39,15 @@
 
 
     <string name="navigation_home_label">Sprünge</string>
-    <string name="navigation_dropzone_label">DZs</string>
-    <string name="navigation_aircraft_label">Flugzeuge</string>
     <string name="navigation_profile_label">Profil</string>
 
     <string name="permission_dialog_title">Zugriffsberechtigung</string>
     <string name="permission_dialog_description">"Die ProtrackReader App braucht die Dateizugriffsberechtigung. Bestätigen Sie diese bitte in den Einstellungen."</string>
     <string name="permission_dialog_cancel">@string/button_action_cancel</string>
     <string name="permission_dialog_proceed">@string/button_action_proceed</string>
+
+    <string name="profile_username_label">Benutzername</string>
+    <string name="profile_canopy_label">Fallschirm</string>
+    <string name="profile_dropzone_label">Sprungplätze</string>
+    <string name="profile_aircraft_label">Flugzeuge</string>
 </resources>
