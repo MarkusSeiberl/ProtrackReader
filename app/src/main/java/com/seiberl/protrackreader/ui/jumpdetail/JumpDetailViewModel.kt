@@ -28,7 +28,7 @@ class JumpDetailViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val modelProducer = CartesianChartModelProducer.build()
+    private val modelProducer = CartesianChartModelProducer()
     private val _uiState = MutableStateFlow(JumpDetailUiState(null, modelProducer))
     val uiState = _uiState.asStateFlow()
 
