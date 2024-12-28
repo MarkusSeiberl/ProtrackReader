@@ -10,6 +10,15 @@ sealed class Screen {
     data object ProfileScreen : Screen()
 
     @Serializable
+    data object AircraftScreen : Screen()
+
+    @Serializable
+    data object CanopyScreen : Screen()
+
+    @Serializable
+    data object DropzoneScreen : Screen()
+
+    @Serializable
     data class JumpDetailScreen(
         val jumpNr: Int
     ) : Screen()

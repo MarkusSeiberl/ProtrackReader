@@ -1,6 +1,5 @@
 package com.seiberl.protrackreader.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,8 +15,10 @@ import com.seiberl.protrackreader.ui.home.JumpListScreen
 import com.seiberl.protrackreader.ui.home.JumpListViewModel
 import com.seiberl.protrackreader.ui.jumpdetail.JumpDetailScreen
 import com.seiberl.protrackreader.ui.profile.ProfileScreen
+import com.seiberl.protrackreader.ui.profile.aircraft.AircraftScreen
+import com.seiberl.protrackreader.ui.profile.canopy.CanopyScreen
+import com.seiberl.protrackreader.ui.profile.dropzone.DropzoneScreen
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Navigation(jumpListViewModel: JumpListViewModel) {
     val navController = rememberNavController()
@@ -36,14 +37,22 @@ fun Navigation(jumpListViewModel: JumpListViewModel) {
             navController = navController,
             startDestination = Screen.JumpListScreen
         ) {
-            composable<Screen.JumpListScreen> { JumpListScreen(jumpListViewModel, navController = navController) }
-
-            composable<Screen.ProfileScreen> { ProfileScreen() }
+            composable<Screen.JumpListScreen> {
+                JumpListScreen(jumpListViewModel, navController = navController)
+            }
 
             composable<Screen.JumpDetailScreen> {
                 val args = it.toRoute<Screen.JumpDetailScreen>()
                 JumpDetailScreen(args.jumpNr, navController)
             }
+
+            composable<Screen.ProfileScreen> { ProfileScreen(navController) }
+
+            composable<Screen.AircraftScreen> { AircraftScreen(navController) }
+
+            composable<Screen.CanopyScreen> { CanopyScreen(navController) }
+
+            composable<Screen.DropzoneScreen> { DropzoneScreen(navController) }
         }
     }
 }

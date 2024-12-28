@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -22,10 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.seiberl.protrackreader.R
+import com.seiberl.protrackreader.ui.Screen
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavController
+) {
     // Initial generierter Name
     var username by remember { mutableStateOf(generateRandomName()) }
 
@@ -75,20 +80,18 @@ fun ProfileScreen() {
             ProfileItem(
                 canopyIcon,
                 R.string.profile_canopy_label,
-                "Set default canopy. Add new canopy.",
-                null
-            ),
-            ProfileItem(
-                aircraftIcon,
-                R.string.profile_aircraft_label,
-                "Set default aircraft. Add new aircraft.",
-                null
-            ),
+                "Set default canopy. Add new canopy."
+            ) { navController.navigate(Screen.CanopyScreen) },
             ProfileItem(
                 Icons.Default.LocationOn,
                 R.string.profile_dropzone_label,
-                "Set default dropzone. Add new dropzones.",
-                {})
+                "Set default dropzone. Add new dropzones."
+            ) { navController.navigate(Screen.DropzoneScreen) },
+            ProfileItem(
+                aircraftIcon,
+                R.string.profile_aircraft_label,
+                "Set default aircraft. Add new aircraft."
+            ) { navController.navigate(Screen.AircraftScreen) }
         )
     }
 }
@@ -120,8 +123,9 @@ fun SettingsItem(icon: ImageVector, @StringRes title: Int, subtitle: String, sho
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { showMore?.invoke() },
+            .clip(RoundedCornerShape(8.dp))
+            .clickable { showMore?.invoke() }
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
