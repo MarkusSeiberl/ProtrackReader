@@ -29,7 +29,7 @@ interface JumpDao {
     fun delete(jump: Jump): Int
 
     @Transaction
-    @Query("SELECT * FROM Jump")
+    @Query("SELECT * FROM Jumps")
     fun observeAll(): Flow<List<Jump>>
 
     @Transaction
@@ -37,18 +37,18 @@ interface JumpDao {
     fun observeJumpMetaData(): Flow<List<JumpMetaData>>
 
     @Transaction
-    @Query("SELECT Number FROM Jump")
+    @Query("SELECT Number FROM Jumps")
     fun observeJumpNumbers(): Flow<List<Int>>
 
     @Transaction
-    @Query("SELECT * FROM Jump WHERE Number IN (:jumpNumbers)")
+    @Query("SELECT * FROM Jumps WHERE Number IN (:jumpNumbers)")
     fun getFilteredJumps(jumpNumbers: List<Int>): List<Jump>
 
     @Transaction
-    @Query("SELECT * FROM Jump WHERE Number = :jumpNr")
+    @Query("SELECT * FROM Jumps WHERE Number = :jumpNr")
     fun getJumpByNumber(jumpNr: Int): Jump?
 
     @Transaction
-    @Query("DELETE FROM Jump WHERE Number = :jumpNr")
+    @Query("DELETE FROM Jumps WHERE Number = :jumpNr")
     fun deleteByNumber(jumpNr: Int)
 }

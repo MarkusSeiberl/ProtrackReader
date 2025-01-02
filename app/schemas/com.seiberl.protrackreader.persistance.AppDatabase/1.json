@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "426e09390edaa5e037c8071d359de09b",
+    "identityHash": "a3ea3fed9c4d694f1c642e22e6ab39e8",
     "entities": [
       {
-        "tableName": "Jump",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `ProtrackID` TEXT NOT NULL, `Number` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL, `ExitAltitude` INTEGER NOT NULL, `DeploymentAltitude` INTEGER NOT NULL, `FreefallTime` INTEGER NOT NULL, `AverageSpeed` INTEGER NOT NULL, `MaxSpeed` INTEGER NOT NULL, `FirstHalfSpeed` INTEGER NOT NULL, `SecondHalfSpeed` INTEGER NOT NULL, `GroundLevelPressure` INTEGER NOT NULL, `FreefallRecorded` INTEGER NOT NULL, `CanopyRecorded` INTEGER NOT NULL, `SampleSize` INTEGER NOT NULL, `Samples` TEXT NOT NULL, PRIMARY KEY(`ID`))",
+        "tableName": "Jumps",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `ProtrackID` TEXT NOT NULL, `Number` INTEGER NOT NULL, `Timestamp` INTEGER NOT NULL, `ExitAltitude` INTEGER NOT NULL, `DeploymentAltitude` INTEGER NOT NULL, `FreefallTime` INTEGER NOT NULL, `AverageSpeed` INTEGER NOT NULL, `MaxSpeed` INTEGER NOT NULL, `FirstHalfSpeed` INTEGER NOT NULL, `SecondHalfSpeed` INTEGER NOT NULL, `GroundLevelPressure` INTEGER NOT NULL, `FreefallRecorded` INTEGER NOT NULL, `CanopyRecorded` INTEGER NOT NULL, `SampleSize` INTEGER NOT NULL, `Samples` TEXT NOT NULL, `AircraftID` TEXT, `CanopyID` TEXT, `DropzoneID` TEXT, PRIMARY KEY(`ID`), FOREIGN KEY(`AircraftID`) REFERENCES `Aircraft`(`ID`) ON UPDATE SET NULL ON DELETE SET NULL , FOREIGN KEY(`CanopyID`) REFERENCES `Canopy`(`ID`) ON UPDATE SET NULL ON DELETE SET NULL , FOREIGN KEY(`DropzoneID`) REFERENCES `Dropzone`(`ID`) ON UPDATE SET NULL ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
@@ -103,6 +103,188 @@
             "columnName": "Samples",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "aircraftId",
+            "columnName": "AircraftID",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "canopyId",
+            "columnName": "CanopyID",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dropzoneId",
+            "columnName": "DropzoneID",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "ID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "FK_Jump_Aircraft",
+            "unique": false,
+            "columnNames": [
+              "AircraftID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `FK_Jump_Aircraft` ON `${TABLE_NAME}` (`AircraftID`)"
+          },
+          {
+            "name": "FK_Jump_Canopy",
+            "unique": false,
+            "columnNames": [
+              "CanopyID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `FK_Jump_Canopy` ON `${TABLE_NAME}` (`CanopyID`)"
+          },
+          {
+            "name": "FK_Jump_Dropzone",
+            "unique": false,
+            "columnNames": [
+              "DropzoneID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `FK_Jump_Dropzone` ON `${TABLE_NAME}` (`DropzoneID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Aircraft",
+            "onDelete": "SET NULL",
+            "onUpdate": "SET NULL",
+            "columns": [
+              "AircraftID"
+            ],
+            "referencedColumns": [
+              "ID"
+            ]
+          },
+          {
+            "table": "Canopy",
+            "onDelete": "SET NULL",
+            "onUpdate": "SET NULL",
+            "columns": [
+              "CanopyID"
+            ],
+            "referencedColumns": [
+              "ID"
+            ]
+          },
+          {
+            "table": "Dropzone",
+            "onDelete": "SET NULL",
+            "onUpdate": "SET NULL",
+            "columns": [
+              "DropzoneID"
+            ],
+            "referencedColumns": [
+              "ID"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Aircraft",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `Registration` TEXT NOT NULL, `Name` TEXT NOT NULL, `Favorite` INTEGER NOT NULL, PRIMARY KEY(`ID`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "registration",
+            "columnName": "Registration",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "Favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "ID"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Canopy",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `Name` TEXT NOT NULL, `Manufacturer` TEXT NOT NULL, `Size` INTEGER NOT NULL, PRIMARY KEY(`ID`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manufacturer",
+            "columnName": "Manufacturer",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size",
+            "columnName": "Size",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "ID"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Dropzone",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `Name` TEXT NOT NULL, PRIMARY KEY(`ID`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "ID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "Name",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -118,12 +300,12 @@
     "views": [
       {
         "viewName": "JumpMetaData",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT Number as number, Timestamp as timestamp, ExitAltitude as exitAltitude, DeploymentAltitude as deploymentAltitude, FreefallTime as freefallTime FROM Jump"
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT Number as number, Timestamp as timestamp, ExitAltitude as exitAltitude, DeploymentAltitude as deploymentAltitude, FreefallTime as freefallTime FROM Jumps"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '426e09390edaa5e037c8071d359de09b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a3ea3fed9c4d694f1c642e22e6ab39e8')"
     ]
   }
 }

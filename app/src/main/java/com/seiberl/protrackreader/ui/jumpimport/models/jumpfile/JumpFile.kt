@@ -28,7 +28,10 @@ class JumpFile {
             freefallRecorded = FreefallRecorded.value,
             canopyRecorded = CanopyRecorded.value,
             sampleSize = SampleSize.value,
-            samples = Samples.value
+            samples = Samples.value,
+            aircraftId = null,
+            canopyId = null,
+            dropzoneId = null,
         )
     }
 

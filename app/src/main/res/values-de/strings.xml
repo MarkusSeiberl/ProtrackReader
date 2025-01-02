@@ -51,4 +51,8 @@
     <string name="profile_canopy_label">Fallschirm</string>
     <string name="profile_dropzone_label">Sprungplätze</string>
     <string name="profile_aircraft_label">Flugzeuge</string>
+    <string name="profile_canopy_subtitle">Fallschirm als Standard setzten oder neue hinzufügen.</string>
+    <string name="profile_dropzone_subtitle">Sprungplatz als Standard setzen oder neue hinzufügen.</string>
+    <string name="profile_aircraft_subtitle">Flugzeug als Standard setzen oder neue hinzufügen.</string>
+    <string name="profile_forward_icon_description">Mehr anzeigen.</string>
 </resources>

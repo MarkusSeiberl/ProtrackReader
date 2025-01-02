@@ -55,5 +55,9 @@
     <string name="profile_canopy_label">Canopy</string>
     <string name="profile_dropzone_label">Dropzones</string>
     <string name="profile_aircraft_label">Aircraft</string>
+    <string name="profile_canopy_subtitle">Set default canopy. Add new canopy.</string>
+    <string name="profile_dropzone_subtitle">Set default dropzone. Add new dropzones.</string>
+    <string name="profile_aircraft_subtitle">Set default aircraft. Add new aircraft.</string>
+    <string name="profile_forward_icon_description">Show more</string>
 
 </resources>

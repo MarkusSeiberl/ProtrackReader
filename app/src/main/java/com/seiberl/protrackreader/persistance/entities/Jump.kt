@@ -2,12 +2,44 @@ package com.seiberl.protrackreader.persistance.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.seiberl.protrackreader.ui.jumpimport.models.jumpfile.JumpFile
 import java.time.Instant
 import java.util.UUID
 
-@Entity
+@Entity(
+    tableName = "Jumps",
+    foreignKeys = [
+        ForeignKey(
+            entity = Aircraft::class,
+            parentColumns = arrayOf("ID"),
+            childColumns = arrayOf("AircraftID"),
+            onUpdate = ForeignKey.SET_NULL,
+            onDelete = ForeignKey.SET_NULL
+        ),
+        ForeignKey(
+            entity = Canopy::class,
+            parentColumns = arrayOf("ID"),
+            childColumns = arrayOf("CanopyID"),
+            onUpdate = ForeignKey.SET_NULL,
+            onDelete = ForeignKey.SET_NULL
+        ),
+        ForeignKey(
+            entity = Dropzone::class,
+            parentColumns = arrayOf("ID"),
+            childColumns = arrayOf("DropzoneID"),
+
+            onUpdate = ForeignKey.SET_NULL,
+            onDelete = ForeignKey.SET_NULL
+        )
+    ],
+    indices = [
+        Index(name = "FK_Jump_Aircraft", value = ["AircraftID"]),
+        Index(name = "FK_Jump_Canopy", value = ["CanopyID"]),
+        Index(name = "FK_Jump_Dropzone", value = ["DropzoneID"])
+    ]
+)
 data class Jump(
     @PrimaryKey
     @ColumnInfo(name = "ID")
@@ -56,7 +88,16 @@ data class Jump(
     val sampleSize: Int,
 
     @ColumnInfo(name = "Samples")
-    val samples: IntArray
+    val samples: IntArray,
+
+    @ColumnInfo(name = "AircraftID")
+    val aircraftId: String?,
+
+    @ColumnInfo(name = "CanopyID")
+    val canopyId: String?,
+
+    @ColumnInfo(name = "DropzoneID")
+    val dropzoneId: String?
 
 ) {
     override fun equals(other: Any?): Boolean {

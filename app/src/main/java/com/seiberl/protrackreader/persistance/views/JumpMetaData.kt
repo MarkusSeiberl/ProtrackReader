@@ -4,7 +4,7 @@ import androidx.room.DatabaseView
 import java.time.Instant
 
 @DatabaseView("SELECT Number as number, Timestamp as timestamp, ExitAltitude as exitAltitude, " +
-        "DeploymentAltitude as deploymentAltitude, FreefallTime as freefallTime FROM Jump")
+        "DeploymentAltitude as deploymentAltitude, FreefallTime as freefallTime FROM Jumps")
 data class JumpMetaData(
     val number: Int,
     val timestamp: Instant,

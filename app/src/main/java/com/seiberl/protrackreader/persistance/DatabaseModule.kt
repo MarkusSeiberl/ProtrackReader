@@ -2,6 +2,9 @@ package com.seiberl.protrackreader.persistance
 
 import android.content.Context
 import androidx.room.Room
+import com.seiberl.protrackreader.persistance.repository.AircraftRepository
+import com.seiberl.protrackreader.persistance.repository.CanopyRepository
+import com.seiberl.protrackreader.persistance.repository.DropzoneRepository
 import com.seiberl.protrackreader.persistance.repository.JumpDetailRepository
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
 import dagger.Module
@@ -36,4 +39,12 @@ object DatabaseModule {
     @Provides
     fun provideJumpDetailRepository(database: AppDatabase) = JumpDetailRepository(database.jumpDao)
 
+    @Provides
+    fun provideAircraftRepository(database: AppDatabase) = AircraftRepository(database.aircraftDao)
+
+    @Provides
+    fun provideCanopyRepository(database: AppDatabase) = CanopyRepository(database.canopyDao)
+
+    @Provides
+    fun provideDropzoneRepository(database: AppDatabase) = DropzoneRepository(database.dropzoneDao)
 }
