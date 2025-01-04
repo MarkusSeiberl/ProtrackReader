@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -63,11 +63,8 @@ android {
             excludes += "META-INF/gradle/incremental.annotation.processors"
         }
     }
-    kapt {
-        correctErrorTypes = true
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
     configurations {
         create("cleanedAnnotations")
@@ -106,6 +103,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    kapt(libs.hilt.compiler)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.hilt.compiler)
+    ksp(libs.androidx.room.compiler)
 }
