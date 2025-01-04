@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.seiberl.protrackreader.persistance.entities.Aircraft
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,9 @@ interface AircraftDao {
     @Delete
     fun delete(aircraft: Aircraft)
 
+    @Update
+    fun update(aircraft: List<Aircraft>)
+
     @Query("SELECT * FROM Aircraft")
     fun getAll(): List<Aircraft>
 
@@ -24,4 +28,7 @@ interface AircraftDao {
 
     @Query("UPDATE Aircraft SET Favorite = :favorite WHERE ID = :id")
     fun starAircraft(id: String, favorite: Boolean)
+
+    @Query("SELECT * FROM Aircraft WHERE Favorite = 1")
+    fun getFavorites(): List<Aircraft>
 }

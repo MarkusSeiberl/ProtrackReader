@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seiberl.protrackreader.persistance.entities.Aircraft
 import com.seiberl.protrackreader.persistance.repository.AircraftRepository
+import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +19,8 @@ data class UIState(
 
 @HiltViewModel
 class AircraftViewModel @Inject constructor(
-    private val aircraftRepository: AircraftRepository
+    private val aircraftRepository: AircraftRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(UIState(emptyList())).apply {
@@ -34,15 +37,20 @@ class AircraftViewModel @Inject constructor(
     }
 
     fun addAircraft(aircraft: Aircraft) {
-        viewModelScope.launch {
+        _uiState.value = _uiState.value.copy(showAddAircraftDialog = false)
+        viewModelScope.launch(ioDispatcher) {
             aircraftRepository.addAircraft(aircraft)
         }
     }
 
     fun starAircraft(aircraft: Aircraft) {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             aircraftRepository.starAircraft(aircraft)
         }
+    }
+
+    fun onDialogDismiss() {
+        _uiState.value = uiState.value.copy(showAddAircraftDialog = false)
     }
 
 

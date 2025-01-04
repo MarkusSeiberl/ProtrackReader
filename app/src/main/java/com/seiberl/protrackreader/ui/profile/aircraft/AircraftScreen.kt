@@ -8,17 +8,25 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,7 +36,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -85,6 +97,13 @@ fun AircraftScrollContent(padding: PaddingValues, viewModel: AircraftViewModel) 
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    if (uiState.showAddAircraftDialog) {
+        AddAircraftDialog(
+            onConfirm = { aircraft -> viewModel.addAircraft(aircraft) },
+            onDismiss = { viewModel.onDialogDismiss() }
+        )
+    }
+
     Column(
         modifier = Modifier
             .padding(padding)
@@ -93,13 +112,21 @@ fun AircraftScrollContent(padding: PaddingValues, viewModel: AircraftViewModel) 
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(16.dp)
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surfaceContainer),
         ) {
-            items(uiState.aircraft) { aircraft ->
+            itemsIndexed(uiState.aircraft) { index, aircraft ->
                 AircraftItem(aircraft) { favAircraft -> viewModel.starAircraft(favAircraft) }
+                if (index < uiState.aircraft.lastIndex) {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
             }
         }
     }
@@ -107,30 +134,37 @@ fun AircraftScrollContent(padding: PaddingValues, viewModel: AircraftViewModel) 
 
 @Composable
 fun AircraftItem(aircraft: Aircraft, onStarClicked: (Aircraft) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = aircraft.name,
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.bodyMedium
-        )
-
-        val icon = if (aircraft.favorite) {
-            Icons.Filled.Star
-        } else {
-            Icons.Outlined.Star
-        }
-
-        IconButton(onClick = { onStarClicked(aircraft) }) {
-            Icon(
-                imageVector = icon,
-                contentDescription = "Star Icon"
+    ListItem(
+        modifier = Modifier.clip(RoundedCornerShape(4.dp)),
+        colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        headlineContent = {
+            Text(
+                text = aircraft.name,
+                style = MaterialTheme.typography.bodyLarge
             )
+        },
+        supportingContent = {
+            Text(
+                text = aircraft.registration,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline
+            )
+        },
+        trailingContent = {
+            val icon = if (aircraft.favorite) {
+                R.drawable.star_filled
+            } else {
+                R.drawable.star_outlined
+            }
+
+            IconButton(onClick = { onStarClicked(aircraft) }) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = ImageVector.vectorResource(icon),
+                    contentDescription = "Star Icon",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
-    }
+    )
 }

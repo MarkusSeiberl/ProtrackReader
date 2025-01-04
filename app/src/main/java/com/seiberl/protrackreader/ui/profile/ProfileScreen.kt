@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
@@ -53,9 +55,12 @@ fun ProfileScreen(
     // Initial generierter Name
     var username by remember { mutableStateOf(generateRandomName()) }
 
+    val verticalScrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(verticalScrollState)
             .padding(16.dp, 64.dp, 16.dp, 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -159,8 +164,14 @@ fun SettingsItem(icon: ImageVector, @StringRes title: Int, subtitle: String, sho
         Spacer(modifier = Modifier.width(16.dp))
 
         Column {
-            Text(text = stringResource(title), fontSize = 16.sp, color = Color.Black)
-            Text(text = subtitle, fontSize = 12.sp, color = Color.Gray)
+            Text(
+                text = stringResource(title),
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.outline)
         }
 
         if (showMore != null) {
