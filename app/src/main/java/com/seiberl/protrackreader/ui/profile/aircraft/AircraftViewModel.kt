@@ -53,5 +53,11 @@ class AircraftViewModel @Inject constructor(
         _uiState.value = uiState.value.copy(showAddAircraftDialog = false)
     }
 
+    fun removeAircraft(aircraft: Aircraft) {
+        viewModelScope.launch(ioDispatcher) {
+            aircraftRepository.remove(aircraft)
+        }
+    }
+
 
 }

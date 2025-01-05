@@ -25,4 +25,8 @@ class AircraftRepository @Inject constructor(
         val favorites = aircraftDao.getFavorites().map { it.copy(favorite = false) }
         aircraftDao.update(favorites)
     }
+
+    fun remove(aircraft: Aircraft) {
+        aircraftDao.delete(aircraft)
+    }
 }
