@@ -99,17 +99,18 @@ fun JumpListScreen(
                         )
                         DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                             DropdownMenuItem(
-                                text = { Text("Set canopy") },
-                                onClick = { /*TODO*/ }
+                                text = { Text("Set Meta Data") },
+                                onClick = { showMenu = false; TODO() }
                             )
-                            DropdownMenuItem(
-                                text = { Text("Set aircraft") },
-                                onClick = { /*TODO*/ }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("Set dropzone") },
-                                onClick = { /*TODO*/ }
-                            )
+                            if (uiState.jumps.isNotEmpty()) {
+                                DropdownMenuItem(
+                                    text = { Text("Create PDF") },
+                                    onClick = {
+                                        showMenu = false
+                                        viewModel.onCreatePdfClicked()
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -132,6 +133,21 @@ fun JumpListScreen(
                 viewModel::onPermissionDialogConfirmed,
                 viewModel::onPermissionDialogDismiss,
                 viewModel::onPermissionDialogDismiss
+            )
+        }
+        
+        if (uiState.showPrintJumpsDialog) {
+            val minJumpNr = uiState.jumps.lastOrNull()?.number ?: 0
+            val maxJumpNr = uiState.jumps.firstOrNull()?.number ?: 0
+            val fromJumpFieldError = uiState.dialogErrorFromJumpField
+            val toJumpFieldError = uiState.dialogErrorToJumpField
+            PrintJumpsDialog(
+                minJumpNr,
+                maxJumpNr,
+                fromJumpFieldError,
+                toJumpFieldError,
+                viewModel::printJumps,
+                viewModel::onPrintJumpsDialogDismiss
             )
         }
 
