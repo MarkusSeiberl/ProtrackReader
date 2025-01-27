@@ -61,6 +61,7 @@ fun ProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(verticalScrollState)
+            .background(MaterialTheme.colorScheme.surfaceBright)
             .padding(16.dp, 64.dp, 16.dp, 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top

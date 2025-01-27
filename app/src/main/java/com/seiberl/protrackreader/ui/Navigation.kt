@@ -1,7 +1,8 @@
 package com.seiberl.protrackreader.ui
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -29,11 +30,12 @@ fun Navigation(jumpListViewModel: JumpListViewModel) {
     val selectedDestination =
         navBackStackEntry?.destination?.route ?: NAVIGATION_BAR_ITEMS.first().route
 
-    Scaffold(
-        bottomBar = { CustomNavigationBar(navigationActions::navigateTo, selectedDestination) }
-    ) { padding ->
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.fillMaxSize()
+    ) {
         NavHost(
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.weight(1f),
             navController = navController,
             startDestination = Screen.JumpListScreen
         ) {
@@ -54,5 +56,7 @@ fun Navigation(jumpListViewModel: JumpListViewModel) {
 
             composable<Screen.DropzoneScreen> { DropzoneScreen(navController) }
         }
+
+        CustomNavigationBar(navigationActions::navigateTo, selectedDestination)
     }
 }

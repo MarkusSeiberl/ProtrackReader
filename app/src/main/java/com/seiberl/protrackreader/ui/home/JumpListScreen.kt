@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -66,6 +70,7 @@ fun JumpListScreen(
     val uiState: JumpListUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.systemBars),
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             var showMenu by remember { mutableStateOf(false) }
@@ -165,7 +170,7 @@ fun EmptyListContent(padding: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(surfaceBrightLight)
+            .background(MaterialTheme.colorScheme.surfaceBright)
             .padding(padding)
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
@@ -188,7 +193,7 @@ fun ScrollContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(surfaceBrightLight)
+            .background(MaterialTheme.colorScheme.surfaceBright)
             .padding(padding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
