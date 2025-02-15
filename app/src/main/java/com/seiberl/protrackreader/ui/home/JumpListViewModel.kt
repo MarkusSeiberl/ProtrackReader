@@ -1,6 +1,10 @@
 package com.seiberl.protrackreader.ui.home
 
+import android.content.Context
+import android.net.Uri
 import android.os.Environment
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
@@ -8,6 +12,7 @@ import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import com.seiberl.protrackreader.ui.home.models.JumpLogPdfCreator
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,11 +29,14 @@ data class JumpListUiState(
     val dialogErrorFromJumpField: Boolean = false
 )
 
+private const val AUTHORITY = "com.seiberl.protrackreader.fileprovider"
+
 @HiltViewModel
 class JumpListViewModel @Inject constructor(
     private val repository: JumpRepository,
     private val jumpLogPdfCreator: JumpLogPdfCreator,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
 
@@ -37,6 +45,7 @@ class JumpListViewModel @Inject constructor(
 
     lateinit var fabClickEvent: () -> Unit
     lateinit var onRequestPermission: () -> Unit
+    lateinit var onShareFile: (fileUri: Uri) -> Unit
 
     private var requestedPermission: Boolean = false
     private val storagePermissionGranted: Boolean
@@ -119,6 +128,8 @@ class JumpListViewModel @Inject constructor(
                 }
 
                 val pdfFile = jumpLogPdfCreator.createJumpLogPdf(jumpsToPrint)
+                val fileUri = FileProvider.getUriForFile(context, AUTHORITY, pdfFile)
+                onShareFile(fileUri)
             }
         }
     }

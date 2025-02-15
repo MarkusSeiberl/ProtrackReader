@@ -7,6 +7,9 @@ import android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.seiberl.protrackreader.ui.Navigation
 import com.seiberl.protrackreader.ui.home.JumpListViewModel
@@ -30,6 +33,7 @@ class MainActivity : ComponentActivity() {
 
         jumpListViewModel.fabClickEvent = ::onShowJumpImportView
         jumpListViewModel.onRequestPermission = ::onRequestPermission
+        jumpListViewModel.onShareFile = ::onShareFile
     }
 
     override fun onResume() {
@@ -49,6 +53,16 @@ class MainActivity : ComponentActivity() {
     private fun onShowJumpImportView() {
         val intent = Intent(this, JumpImportActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun onShareFile(fileUri: Uri) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.setType("application/pdf")
+        intent.putExtra(Intent.EXTRA_STREAM, fileUri)
+
+
+        startActivity(Intent.createChooser(intent, null))
     }
 
     private fun restartApp() {
