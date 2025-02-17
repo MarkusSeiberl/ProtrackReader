@@ -3,12 +3,8 @@ package com.seiberl.protrackreader.ui.home.models
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Typeface
-import android.graphics.Typeface.BOLD
-import android.graphics.Typeface.DEFAULT
 import android.graphics.Typeface.DEFAULT_BOLD
 import android.graphics.pdf.PdfDocument
-import android.text.TextPaint
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
