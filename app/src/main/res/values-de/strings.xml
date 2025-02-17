@@ -38,9 +38,19 @@
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>
     <string name="jumplist_delete_icon_description">Lösche ausgewählte Sprünge.</string>
 
-
     <string name="navigation_home_label">Sprünge</string>
     <string name="navigation_profile_label">Profil</string>
+
+    <string name="pdf_jump_nr">Nr.</string>
+    <string name="pdf_date">Datum</string>
+    <string name="pdf_aircraft">Luftfahrzeug</string>
+    <string name="pdf_canopy">Fallschirm</string>
+    <string name="pdf_location">Landeort</string>
+    <string name="pdf_wind_speed">Bodenwind</string>
+    <string name="pdf_exit_altitude">Absprunghöhe</string>
+    <string name="pdf_freefall_time">Freifallzeit</string>
+    <string name="pdf_notes">Bemerkungen</string>
+    <string name="pdf_signature">Bestätigung</string>
 
     <string name="permission_dialog_title">Zugriffsberechtigung</string>
     <string name="permission_dialog_description">"Die ProtrackReader App braucht die Dateizugriffsberechtigung. Bestätigen Sie diese bitte in den Einstellungen."</string>
