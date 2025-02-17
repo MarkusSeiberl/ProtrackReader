@@ -3,41 +3,49 @@ package com.seiberl.protrackreader.ui.home.models
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.DEFAULT
+import android.graphics.Typeface.DEFAULT_BOLD
 import android.graphics.pdf.PdfDocument
+import android.text.TextPaint
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 private const val PADDING_START = 30f
 private const val PADDING_TOP = 30f
 private const val PADDING_END = 30f
+private const val PADDING_BOTTOM = 30f
 
-private val COLUMN_WIDTHS = listOf(78.2f, 78.2f, 78.2f, 78.2f, 78.2f, 78.2f, 78.2f, 78.2f, 78.2f, 78.2f)
+private val COLUMN_WIDTHS = listOf(40f, 58.2f, 88.2f, 88.2f, 78.2f, 78.2f, 78.2f, 78.2f, 111.4f, 83.2f)
 
 class PageCreator constructor(
-    private val document: PdfDocument,
     private val pageWidth: Int,
     private val pageHeight: Int,
-    private val pdfPage: Int,
-    private val jumps: List<JumpMetaData>
+    document: PdfDocument,
+    pdfPage: Int
 ) {
-    fun createPage(): PdfDocument.Page {
-        val pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pdfPage).create()
-        val page = document.startPage(pageInfo)
-        val canvas: Canvas = page.canvas
 
-        canvas.width
+    private val pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pdfPage).create()
+    private val page = document.startPage(pageInfo)
+    private val canvas: Canvas = page.canvas
 
-        var currentY = drawHeader(canvas)
+    private val fontSizeTitle = FontMetrics(canvas.height).getNominalFontHeight() * TITLE_FONT_SCALE
+    private val fontSizeBody = FontMetrics(canvas.height).getNominalFontHeight() * FIELD_FONT_SCALE
 
-        jumps.forEach { jump ->
-            currentY = drawJump(canvas, currentY, jump)
-        }
+    private var currentY = 0f
 
-        return page
+    init {
+        currentY = drawHeader(canvas)
+        require(COLUMN_WIDTHS.sum().roundToInt() == 782) { "Width was ${COLUMN_WIDTHS.sum().roundToInt()} but should be 782"}
     }
+
+    fun create(): PdfDocument.Page = page
+
 
     private fun drawHeader(canvas: Canvas): Float {
         val startX = PADDING_START
@@ -47,17 +55,16 @@ class PageCreator constructor(
 
         // TODO fetch from resources
         val headers = listOf(
-            "Sprung Nr.", "Datum", "Luftfahrzeug", "Fallschirm", "Landeort",
+            "Nr.", "Datum", "Luftfahrzeug", "Fallschirm", "Landeort",
             "Bodenwind", "Absprunghöhe", "Freifallzeit", "Bemerkungen", "Unterschrift"
         )
-
-
-        val fontSize = FontMetrics(canvas.height).getNominalFontHeight() * SUBTITLE_FONT_SCALE
-        val cell = CellDimensions(fontSize)
+        val cell = CellDimensions(fontSizeTitle)
 
         val paint = Paint().apply {
             color = Color.BLACK
-            textSize = fontSize
+            textSize = fontSizeTitle
+            typeface = DEFAULT_BOLD
+            letterSpacing = 0.06f
         }
 
         var currentX = startX
@@ -73,10 +80,32 @@ class PageCreator constructor(
         return startX + cell.height
     }
 
-    private fun drawJump(canvas: Canvas, startY: Float, jump: JumpMetaData): Float {
-        val fontSize = FontMetrics(canvas.height).getNominalFontHeight() * FIELD_FONT_SCALE
-        val cell = CellDimensions(fontSize)
+    fun canAddJump(jump: JumpMetaData): Boolean {
+        val cell = CellDimensions(fontSizeBody)
+        val paint = Paint().apply {
+            color = Color.BLACK
+            textSize = cell.fontSize
+            letterSpacing = 0.04f
+        }
 
+        val jumpData = jump.toList()
+        val maxLines = jumpData
+            .map { createLines(it, pageWidth.toFloat(), paint) }
+            .maxOf { it.size }
+
+        repeat((maxLines-1)) { cell.addLine() }
+
+        val remainingHeight = pageHeight - currentY - PADDING_BOTTOM
+
+        return remainingHeight >= cell.height
+    }
+
+    fun addJump(jump: JumpMetaData) {
+        currentY = drawJump(canvas, currentY, jump)
+    }
+
+    private fun drawJump(canvas: Canvas, startY: Float, jump: JumpMetaData): Float {
+        val cell = CellDimensions(fontSizeBody)
         var currentX = PADDING_START
         val endX = pageWidth.toFloat() - PADDING_END
         val textPositionY = startY + cell.textPositionY
@@ -107,9 +136,11 @@ class PageCreator constructor(
             return currentY
         }
 
-        val paint = Paint()
-        paint.color = Color.BLACK
-        paint.textSize = cell.fontSize
+        val paint = Paint().apply {
+            color = Color.BLACK
+            textSize = cell.fontSize
+            letterSpacing = 0.04f
+        }
 
         val lines = createLines(text, width, paint)
 
@@ -143,20 +174,14 @@ class PageCreator constructor(
     private fun drawHorizontalLine(canvas: Canvas, startX: Float, yAxis: Float, endX: Float) =
         drawLine(canvas, startX, yAxis, endX, yAxis)
 
-
     private fun drawVerticalLine(canvas: Canvas, xAxis: Float, startY: Float, endY: Float) =
         drawLine(canvas, xAxis, startY, xAxis, endY)
-
 
     private fun drawLine(canvas: Canvas, startX: Float, startY: Float, endX: Float, endY: Float) {
         val paint = Paint()
         paint.color = Color.BLACK
         paint.strokeWidth = 1f
         canvas.drawLine(startX, startY, endX, endY, paint)
-    }
-
-    fun addJump(jump: JumpMetaData) {
-        //drawJump()
     }
 }
 

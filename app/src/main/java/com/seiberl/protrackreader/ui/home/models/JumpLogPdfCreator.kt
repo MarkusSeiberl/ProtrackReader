@@ -12,8 +12,6 @@ import javax.inject.Inject
 private const val PAGE_WIDTH = 842
 private const val PAGE_HEIGHT = 595
 
-private const val MAX_JUMPS_PER_PAGE = 10
-
 class JumpLogPdfCreator @Inject constructor(
     @ApplicationContext context: Context
 ) {
@@ -26,7 +24,7 @@ class JumpLogPdfCreator @Inject constructor(
         val sortedJumps = jumps.sortedBy { it.number }
 
         var pdfPage = 1
-        val pageCreator = PageCreator(pdfDocument, PAGE_WIDTH, PAGE_HEIGHT, pdfPage)
+        var pageCreator = PageCreator(PAGE_WIDTH, PAGE_HEIGHT, pdfDocument, pdfPage)
         val iterator = sortedJumps.iterator()
 
         while (iterator.hasNext()) {
@@ -34,26 +32,13 @@ class JumpLogPdfCreator @Inject constructor(
             if (pageCreator.canAddJump(jump)) {
                 pageCreator.addJump(jump)
             } else {
-                val page = pageCreator.createPage()
-                pdfDocument.finishPage(page)
+                pdfDocument.finishPage(pageCreator.create())
                 pdfPage += 1
-                pageCreator.reset(pdfPage)
+                pageCreator = PageCreator(PAGE_WIDTH, PAGE_HEIGHT, pdfDocument, pdfPage)
                 pageCreator.addJump(jump)
             }
         }
-        val lastPage = pageCreator.createPage()
-        pdfDocument.finishPage(lastPage)
-
-
-
-//        val jumpPages = sortedJumps.chunked(MAX_JUMPS_PER_PAGE)
-//
-//        jumpPages.forEachIndexed { index, pageJumps ->
-//            val pdfPage = index + 1 // +1 because index starts at 0
-//            val pageCreator = PageCreator(pdfDocument, PAGE_WIDTH, PAGE_HEIGHT, index, pageJumps)
-//            val page = pageCreator.createPage()
-//            pdfDocument.finishPage(page)
-//        }
+        pdfDocument.finishPage(pageCreator.create())
 
         val exportFolder = File(externalFilesDir, "export")
         if (!exportFolder.exists()) {
@@ -72,34 +57,4 @@ class JumpLogPdfCreator @Inject constructor(
 
         return filePath
     }
-
-    private fun paginateJumps(jumps: List<JumpMetaData>): List<List<JumpMetaData>> {
-        val pages = mutableListOf<List<JumpMetaData>>()
-        var currentPageJumps = mutableListOf<JumpMetaData>()
-        var currentHeight = 0f
-
-        for (jump in jumps) {
-            val jumpHeight = measureJumpHeight(jump)
-
-            // Check if the jump fits in the remaining space
-            if (currentHeight + jumpHeight > pageHeight) {
-                // Save the current page and start a new one
-                pages.add(currentPageJumps)
-                currentPageJumps = mutableListOf()
-                currentHeight = 0f
-            }
-
-            // Add the jump to the current page
-            currentPageJumps.add(jump)
-            currentHeight += jumpHeight
-        }
-
-        // Add the last page if it contains any jumps
-        if (currentPageJumps.isNotEmpty()) {
-            pages.add(currentPageJumps)
-        }
-
-        return pages
-    }
-
 }
