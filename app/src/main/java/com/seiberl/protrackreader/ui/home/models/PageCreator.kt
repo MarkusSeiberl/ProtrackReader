@@ -16,12 +16,13 @@ private const val PADDING_START = 30f
 private const val PADDING_TOP = 30f
 private const val PADDING_END = 30f
 private const val PADDING_BOTTOM = 30f
+private val REGEX_CRLF = Regex("\r\n|\n|\r")
 
-private val COLUMN_WIDTHS = listOf(40f, 58.2f, 88.2f, 88.2f, 78.2f, 78.2f, 78.2f, 78.2f, 111.4f, 83.2f)
-
-class PageCreator constructor(
+class PageCreator(
     private val pageWidth: Int,
     private val pageHeight: Int,
+    private val headers: List<String>,
+    private val columnWidths: List<Float>,
     document: PdfDocument,
     pdfPage: Int
 ) {
@@ -37,7 +38,7 @@ class PageCreator constructor(
 
     init {
         currentY = drawHeader(canvas)
-        require(COLUMN_WIDTHS.sum().roundToInt() == 782) { "Width was ${COLUMN_WIDTHS.sum().roundToInt()} but should be 782"}
+        require(columnWidths.sum().roundToInt() == 782) { "Width was ${columnWidths.sum().roundToInt()} but should be 782"}
     }
 
     fun create(): PdfDocument.Page = page
@@ -47,15 +48,7 @@ class PageCreator constructor(
         val startX = PADDING_START
         val startY = PADDING_TOP
         val endX = pageWidth.toFloat() - PADDING_END
-        drawHorizontalLine(canvas, startX, startY, endX)
-
-        // TODO fetch from resources
-        val headers = listOf(
-            "Nr.", "Datum", "Luftfahrzeug", "Fallschirm", "Landeort",
-            "Bodenwind", "Absprunghöhe", "Freifallzeit", "Bemerkungen", "Unterschrift"
-        )
         val cell = CellDimensions(fontSizeTitle)
-
         val paint = Paint().apply {
             color = Color.BLACK
             textSize = fontSizeTitle
@@ -63,12 +56,14 @@ class PageCreator constructor(
             letterSpacing = 0.06f
         }
 
+        drawHorizontalLine(canvas, startX, startY, endX)
+
         var currentX = startX
         val currentY = startY + cell.textPositionY
         for (i in headers.indices) {
             canvas.drawText(headers[i], currentX + cell.startPadding, currentY, paint)
             drawVerticalLine(canvas, currentX, startY, startY + cell.height)
-            currentX += COLUMN_WIDTHS[i]
+            currentX += columnWidths[i]
         }
         drawVerticalLine(canvas, currentX, startY, startY + cell.height)
         drawHorizontalLine(canvas, startX, startY + cell.height, endX)
@@ -86,7 +81,7 @@ class PageCreator constructor(
 
         val jumpData = jump.toList()
         val maxLines = jumpData
-            .map { createLines(it, pageWidth.toFloat(), paint) }
+            .mapIndexed { index, data -> createTextLines(data, columnWidths[index], paint) }
             .maxOf { it.size }
 
         repeat((maxLines-1)) { cell.addLine() }
@@ -98,24 +93,32 @@ class PageCreator constructor(
 
     fun addJump(jump: JumpMetaData) {
         currentY = drawJump(canvas, currentY, jump)
+        drawHorizontalLine(canvas, PADDING_START, currentY, pageWidth.toFloat() - PADDING_END)
     }
 
     private fun drawJump(canvas: Canvas, startY: Float, jump: JumpMetaData): Float {
         val cell = CellDimensions(fontSizeBody)
         var currentX = PADDING_START
-        val endX = pageWidth.toFloat() - PADDING_END
         val textPositionY = startY + cell.textPositionY
         var endPositionY = textPositionY
 
         val jumpValues = jump.toList()
         jumpValues.forEachIndexed { index, value ->
-            val cellWidth = COLUMN_WIDTHS[index] - cell.startPadding - cell.endPadding
+            val cellWidth = columnWidths[index] - cell.startPadding - cell.endPadding
             val newY = drawMultiLineText(canvas, value, currentX, textPositionY, cellWidth, cell)
             endPositionY = max(endPositionY, newY)
-            currentX += COLUMN_WIDTHS[index]
+            currentX += columnWidths[index]
         }
 
-        return endPositionY + cell.bottomPadding
+        currentX = PADDING_START
+        endPositionY += cell.bottomPadding
+        drawVerticalLine(canvas, currentX, startY, endPositionY)
+        columnWidths.forEach { width ->
+            currentX += width
+            drawVerticalLine(canvas, currentX, startY, endPositionY)
+        }
+
+        return endPositionY
     }
 
     private fun drawMultiLineText(
@@ -138,32 +141,40 @@ class PageCreator constructor(
             letterSpacing = 0.04f
         }
 
-        val lines = createLines(text, width, paint)
+        val lines = createTextLines(text, width, paint)
 
         lines.forEach { line ->
             canvas.drawText(line, xAxis + cell.startPadding, currentY, paint)
-            currentY += cell.linePadding + cell.fontSize
+            if (line != lines.last()) {
+                currentY += cell.linePadding + cell.fontSize
+            }
         }
 
         return currentY
     }
 
-    private fun createLines(text: String, width: Float, paint: Paint): List<String> {
+    private fun createTextLines(text: String, width: Float, paint: Paint): List<String> {
         val lines = mutableListOf<String>()
-        val words = text.split(" ")
+        val userLines = text.split(REGEX_CRLF)
 
-        val iterator = words.iterator()
-        var line = iterator.next()
-        while (iterator.hasNext()) {
-            val word = iterator.next()
-            val textWidth = paint.measureText("$line $word")
-            if (textWidth > width) {
-                lines.add(line)
-                line = ""
+        userLines.forEach { userLine ->
+
+            val words = userLine.split(" ")
+            val iterator = words.iterator()
+            var line = iterator.next()
+            while (iterator.hasNext()) {
+                val word = iterator.next().trim()
+                val textWidth = paint.measureText("$line$word ")
+                if (textWidth > width) {
+                    lines.add(line)
+                    line = ""
+                }
+                line += "$word "
             }
-            line += " $word"
+            lines.add(line)
         }
-        lines.add(line)
+
+
         return lines
     }
 
@@ -175,8 +186,8 @@ class PageCreator constructor(
 
     private fun drawLine(canvas: Canvas, startX: Float, startY: Float, endX: Float, endY: Float) {
         val paint = Paint()
-        paint.color = Color.BLACK
-        paint.strokeWidth = 1f
+        paint.color = Color.LTGRAY
+        paint.strokeWidth = 0.5f
         canvas.drawLine(startX, startY, endX, endY, paint)
     }
 }
@@ -195,7 +206,7 @@ fun JumpMetaData.toList(): List<String> {
         "2 m/s",
         exitAltitude.toString(),
         freefallTime.toString(),
-        "4-way jump - QMFCN",
+        "4-way\n jump - QMFCN asdf more test samples", // TODO check for double slashes
         ""
     )
 }
