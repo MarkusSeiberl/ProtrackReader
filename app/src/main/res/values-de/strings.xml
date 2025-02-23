@@ -38,6 +38,10 @@
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>
     <string name="jumplist_delete_icon_description">Lösche ausgewählte Sprünge.</string>
 
+    <string name="pdf_dialog_title">PDF erstellen</string>
+    <string name="pdf_dialog_description">Geben Sie die Sprungnummern ein, die Sie in die PDF-Datei aufnehmen möchten.</string>
+    <string name="pdf_dialog_include_all">Alle Sprünge hinzufügen</string>
+
     <string name="navigation_home_label">Sprünge</string>
     <string name="navigation_profile_label">Profil</string>
 

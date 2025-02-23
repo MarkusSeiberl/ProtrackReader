@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -34,6 +36,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -60,7 +63,9 @@ fun PrintJumpsDialog(
             val verticalScrollState = rememberScrollState()
 
             Column(
-                modifier = Modifier.padding(12.dp).verticalScroll(verticalScrollState)
+                modifier = Modifier
+                    .padding(12.dp)
+                    .verticalScroll(verticalScrollState)
             ) {
                 Icon(
                     modifier = Modifier
@@ -72,77 +77,118 @@ fun PrintJumpsDialog(
                 )
 
                 Text(
-                    text = "Create PDF",
+                    text = stringResource(R.string.pdf_dialog_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
                 Text(
-                    text = "Enter the jump numbers you want to include in the PDF.",
+                    text = stringResource(R.string.pdf_dialog_description),
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(8.dp)
                 )
+
+                val (checkedState, onStateChange) = remember { mutableStateOf(false) }
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                        .toggleable(
+                            value = checkedState,
+                            onValueChange = { onStateChange(!checkedState) },
+                            role = Role.Checkbox
+                        )
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = checkedState,
+                        onCheckedChange = null
+                    )
+                    Text(
+                        text = stringResource(R.string.pdf_dialog_include_all),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
 
                 var jumpNrFrom by remember { mutableStateOf("") }
                 var jumpNrTo by remember { mutableStateOf("") }
 
                 val supportedFromText: @Composable (() -> Unit)? = if (fromJumpFieldError) {
-                    { Text("Enter jump number between $minJumpNr and $maxJumpNr", color = MaterialTheme.colorScheme.error) }
+                    {
+                        Text(
+                            text = "Enter jump number between $minJumpNr and $maxJumpNr",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 } else {
                     null
                 }
+
                 val supportedToText: @Composable (() -> Unit)? = if (toJumpFieldError) {
-                    { Text("Enter jump number between $minJumpNr and $maxJumpNr", color = MaterialTheme.colorScheme.error) }
+                    {
+                        Text(
+                            "Enter jump number between $minJumpNr and $maxJumpNr",
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 } else {
                     null
                 }
 
-                val focusManager = LocalFocusManager.current
+                if (!checkedState) {
 
-                OutlinedTextField(
-                    value = jumpNrFrom,
-                    onValueChange = { newValue -> jumpNrFrom = newValue },
-                    label = { Text("From") },
-                    supportingText = supportedFromText,
-                    textStyle = LocalTextStyle.current,
-                    maxLines = 1,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                )
+                    val focusManager = LocalFocusManager.current
 
-                OutlinedTextField(
-                    value = jumpNrTo,
-                    onValueChange = { newValue -> jumpNrTo = newValue },
-                    label = { Text("To") },
-                    supportingText = supportedToText,
-                    textStyle = LocalTextStyle.current,
-                    maxLines = 1,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                            onCreatePdfOfJumps(
-                                jumpNrFrom, jumpNrTo
-                            )
-                        }
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                )
+                    OutlinedTextField(
+                        value = jumpNrFrom,
+                        onValueChange = { newValue -> jumpNrFrom = newValue },
+                        label = { Text("From") },
+                        supportingText = supportedFromText,
+                        textStyle = LocalTextStyle.current,
+                        maxLines = 1,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                    )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                    OutlinedTextField(
+                        value = jumpNrTo,
+                        onValueChange = { newValue -> jumpNrTo = newValue },
+                        label = { Text("To") },
+                        supportingText = supportedToText,
+                        textStyle = LocalTextStyle.current,
+                        maxLines = 1,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                                onCreatePdfOfJumps(
+                                    jumpNrFrom, jumpNrTo
+                                )
+                            }
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
 
                 Row(modifier = Modifier.align(Alignment.End)) {
                     TextButton(
@@ -153,6 +199,8 @@ fun PrintJumpsDialog(
 
                     TextButton(
                         onClick = {
+                            jumpNrFrom = if (checkedState) "$minJumpNr" else jumpNrFrom
+                            jumpNrTo = if (checkedState) "$maxJumpNr" else jumpNrTo
                             onCreatePdfOfJumps(
                                 jumpNrFrom, jumpNrTo
                             )

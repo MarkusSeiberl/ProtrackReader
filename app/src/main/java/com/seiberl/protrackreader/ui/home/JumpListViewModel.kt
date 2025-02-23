@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.max
+import kotlin.math.min
 
 data class JumpListUiState(
     val jumps: List<JumpMetaData> = emptyList(),
@@ -122,8 +124,10 @@ class JumpListViewModel @Inject constructor(
             }
             else -> {
                 onPrintJumpsDialogDismiss()
+                val lowerJumpNr = min(startJumpNr.toInt(), endJumpNr.toInt())
+                val upperJumpNr = max(startJumpNr.toInt(), endJumpNr.toInt())
                 val jumpsToPrint = _uiState.value.jumps.filter {
-                    it.number in startJumpNr.toInt()..endJumpNr.toInt()
+                    it.number in lowerJumpNr..upperJumpNr
                 }
 
                 val pdfFile = jumpLogPdfCreator.createJumpLogPdf(jumpsToPrint)

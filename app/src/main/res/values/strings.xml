@@ -43,6 +43,10 @@
     <string name="jumplist_button_description">Import jump button</string>
     <string name="jumplist_delete_icon_description">Delete selected jumps.</string>
 
+    <string name="pdf_dialog_title">Create PDF</string>
+    <string name="pdf_dialog_description">Enter the jump numbers you want to include in the PDF.</string>
+    <string name="pdf_dialog_include_all">Include all jumps</string>
+
     <string name="navigation_home_label">Jumps</string>
     <string name="navigation_profile_label">Profile</string>
 
