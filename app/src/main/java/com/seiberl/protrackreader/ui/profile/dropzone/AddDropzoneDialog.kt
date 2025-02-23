@@ -66,7 +66,7 @@ fun AddDropzoneDialog(onConfirm: (dropzone: Dropzone) -> Unit, onDismiss: () -> 
                 )
 
                 Text(
-                    text = "Add New Dropzone",
+                    text = stringResource(R.string.profile_dropzone_dialog_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )

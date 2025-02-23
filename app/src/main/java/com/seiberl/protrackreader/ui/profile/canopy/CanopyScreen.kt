@@ -69,7 +69,7 @@ fun CanopyScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Localized description"
+                            contentDescription = stringResource(R.string.button_action_back)
                         )
                     }
                 },
@@ -84,7 +84,7 @@ fun CanopyScreen(
                     .systemBarsPadding()
                     .padding(16.dp)
             ) {
-                Text("Add Canopy")
+                Text(stringResource(R.string.profile_canopy_add))
             }
         },
     ) { padding ->
@@ -184,7 +184,7 @@ fun CanopyItem(canopy: Canopy, onStarClicked: (Canopy) -> Unit, onRemoveClicked:
                         Icon(
                             modifier = Modifier.size(24.dp),
                             imageVector = ImageVector.vectorResource(icon),
-                            contentDescription = "Star Icon",
+                            contentDescription = stringResource(R.string.profile_set_default),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }

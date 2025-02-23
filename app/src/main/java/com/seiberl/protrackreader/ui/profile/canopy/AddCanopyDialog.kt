@@ -66,7 +66,7 @@ fun AddCanopyDialog(onConfirm: (canopy: Canopy) -> Unit, onDismiss: () -> Unit) 
                 )
 
                 Text(
-                    text = "Add New Canopy",
+                    text = stringResource(R.string.profile_canopy_dialog_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )

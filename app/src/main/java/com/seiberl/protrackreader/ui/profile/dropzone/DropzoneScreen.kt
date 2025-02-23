@@ -69,7 +69,7 @@ fun DropzoneScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Localized description"
+                            contentDescription = stringResource(R.string.button_action_back)
                         )
                     }
                 },
@@ -84,7 +84,7 @@ fun DropzoneScreen(
                     .systemBarsPadding()
                     .padding(16.dp)
             ) {
-                Text("Add Dropzone")
+                Text(stringResource(R.string.profile_dropzone_add))
             }
         },
     ) { padding ->
@@ -136,11 +136,15 @@ fun DropzoneScrollContent(padding: PaddingValues, viewModel: DropzoneViewModel) 
 }
 
 @Composable
-fun DropzoneItem(dropzone: Dropzone, onStarClicked: (Dropzone) -> Unit, onRemoveClicked: (Dropzone) -> Unit) {
+fun DropzoneItem(
+    dropzone: Dropzone,
+    onStarClicked: (Dropzone) -> Unit,
+    onRemoveClicked: (Dropzone) -> Unit
+) {
 
     val dismissState = rememberSwipeToDismissBoxState()
 
-    when(dismissState.currentValue) {
+    when (dismissState.currentValue) {
         EndToStart -> {
             LaunchedEffect(dismissState) {
                 onRemoveClicked(dropzone)
@@ -149,7 +153,6 @@ fun DropzoneItem(dropzone: Dropzone, onStarClicked: (Dropzone) -> Unit, onRemove
         }
         StartToEnd, Settled -> {}
     }
-
 
     SwipeToDismissBox(
         state = dismissState,
@@ -184,7 +187,7 @@ fun DropzoneItem(dropzone: Dropzone, onStarClicked: (Dropzone) -> Unit, onRemove
                         Icon(
                             modifier = Modifier.size(24.dp),
                             imageVector = ImageVector.vectorResource(icon),
-                            contentDescription = "Star Icon",
+                            contentDescription = stringResource(R.string.profile_set_default),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }

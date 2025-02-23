@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="button_action_cancel">Abbrechen</string>
     <string name="button_action_abort">Abbrechen</string>
-    <string name="button_action_proceed">Weiter</string>
+    <string name="button_action_back">Zurück</string>
+    <string name="button_action_cancel">Abbrechen</string>
     <string name="button_action_continue">Weiter</string>
-    <string name="button_action_retry">Wiederholen</string>
     <string name="button_action_finish">Beenden</string>
+    <string name="button_action_proceed">Weiter</string>
     <string name="button_action_restart">Neustart</string>
+    <string name="button_action_retry">Wiederholen</string>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
     <string name="jumpdetail_info_title_statistics">Statistik</string>
@@ -66,7 +67,15 @@
     <string name="profile_dropzone_label">Sprungplätze</string>
     <string name="profile_aircraft_label">Flugzeuge</string>
     <string name="profile_canopy_subtitle">Fallschirm als Standard setzten oder neue hinzufügen.</string>
+    <string name="profile_canopy_add">Fallschirm hinzufügen</string>
     <string name="profile_dropzone_subtitle">Sprungplatz als Standard setzen oder neue hinzufügen.</string>
+    <string name="profile_dropzone_add">Sprungplatz hinzufügen</string>
     <string name="profile_aircraft_subtitle">Flugzeug als Standard setzen oder neue hinzufügen.</string>
+    <string name="profile_aircraft_add">Flugzeug hinzufügen</string>
     <string name="profile_forward_icon_description">Mehr anzeigen.</string>
+    <string name="profile_set_default">Als Standard setzen</string>
+
+    <string name="profile_aircraft_dialog_title">Flugzeug Hinzufügen</string>
+    <string name="profile_canopy_dialog_title">Fallschirm Hinzufügen</string>
+    <string name="profile_dropzone_dialog_title">Sprungplaz Hinzufügen</string>
 </resources>

@@ -69,7 +69,7 @@ fun AircraftScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Localized description"
+                            contentDescription = stringResource(R.string.button_action_back)
                         )
                     }
                 },
@@ -84,7 +84,7 @@ fun AircraftScreen(
                     .systemBarsPadding()
                     .padding(16.dp)
             ) {
-                Text("Add Aircraft")
+                Text(stringResource(R.string.profile_aircraft_add))
             }
         },
     ) { padding ->
@@ -185,7 +185,7 @@ fun AircraftItem(aircraft: Aircraft, onStarClicked: (Aircraft) -> Unit, onRemove
                         Icon(
                             modifier = Modifier.size(24.dp),
                             imageVector = ImageVector.vectorResource(icon),
-                            contentDescription = "Star Icon",
+                            contentDescription = stringResource(R.string.profile_set_default),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }

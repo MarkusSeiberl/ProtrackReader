@@ -63,7 +63,7 @@ fun AddAircraftDialog(onConfirm: (aircraft: Aircraft) -> Unit, onDismiss: () -> 
                 )
 
                 Text(
-                    text = "Add New Aircraft",
+                    text = stringResource(R.string.profile_aircraft_dialog_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
