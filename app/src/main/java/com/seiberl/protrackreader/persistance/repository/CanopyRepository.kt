@@ -1,10 +1,32 @@
 package com.seiberl.protrackreader.persistance.repository
 
 import com.seiberl.protrackreader.persistance.dao.CanopyDao
+import com.seiberl.protrackreader.persistance.entities.Canopy
 import javax.inject.Inject
 
 class CanopyRepository @Inject constructor(
     private val canopyDao: CanopyDao
 ) {
-    fun observeCanopy() = canopyDao.observeAll()
+    fun observe() = canopyDao.observeAll()
+
+    fun add(canopy: Canopy) {
+        if (canopy.favorite) {
+            disfavorExistingAircraft()
+        }
+        canopyDao.insert(canopy)
+    }
+
+    fun star(canopy: Canopy) {
+        disfavorExistingAircraft()
+        canopyDao.star(canopy.id, !canopy.favorite)
+    }
+
+    private fun disfavorExistingAircraft() {
+        val favorites = canopyDao.getFavorites().map { it.copy(favorite = false) }
+        canopyDao.update(favorites)
+    }
+
+    fun remove(canopy: Canopy) {
+        canopyDao.delete(canopy)
+    }
 }

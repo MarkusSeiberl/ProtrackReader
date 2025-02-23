@@ -25,7 +25,7 @@ class AircraftViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(UIState(emptyList())).apply {
         viewModelScope.launch {
-            aircraftRepository.observeAircraft().collect {
+            aircraftRepository.observe().collect {
                 value = value.copy(aircraft = it)
             }
         }
@@ -39,13 +39,13 @@ class AircraftViewModel @Inject constructor(
     fun addAircraft(aircraft: Aircraft) {
         _uiState.value = _uiState.value.copy(showAddAircraftDialog = false)
         viewModelScope.launch(ioDispatcher) {
-            aircraftRepository.addAircraft(aircraft)
+            aircraftRepository.add(aircraft)
         }
     }
 
     fun starAircraft(aircraft: Aircraft) {
         viewModelScope.launch(ioDispatcher) {
-            aircraftRepository.starAircraft(aircraft)
+            aircraftRepository.star(aircraft)
         }
     }
 
@@ -58,6 +58,4 @@ class AircraftViewModel @Inject constructor(
             aircraftRepository.remove(aircraft)
         }
     }
-
-
 }

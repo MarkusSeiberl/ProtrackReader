@@ -19,4 +19,7 @@ data class Canopy(
 
     @ColumnInfo(name = "Size")
     val size: Int,
+
+    @ColumnInfo(name = "Favorite")
+    val favorite: Boolean,
 )

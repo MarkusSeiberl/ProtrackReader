@@ -164,7 +164,10 @@ fun SettingsItem(icon: ImageVector, @StringRes title: Int, subtitle: String, sho
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        Column {
+        Column(
+
+            modifier = Modifier.weight(1f),
+        ) {
             Text(
                 text = stringResource(title),
                 style = MaterialTheme.typography.bodyLarge
@@ -176,7 +179,7 @@ fun SettingsItem(icon: ImageVector, @StringRes title: Int, subtitle: String, sho
         }
 
         if (showMore != null) {
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(16.dp))
             Icon(
                 imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
                 contentDescription = stringResource(R.string.profile_forward_icon_description)

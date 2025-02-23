@@ -27,7 +27,7 @@ interface AircraftDao {
     fun observeAll(): Flow<List<Aircraft>>
 
     @Query("UPDATE Aircraft SET Favorite = :favorite WHERE ID = :id")
-    fun starAircraft(id: String, favorite: Boolean)
+    fun star(id: String, favorite: Boolean)
 
     @Query("SELECT * FROM Aircraft WHERE Favorite = 1")
     fun getFavorites(): List<Aircraft>

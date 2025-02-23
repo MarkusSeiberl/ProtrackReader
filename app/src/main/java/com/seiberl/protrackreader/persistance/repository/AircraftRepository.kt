@@ -7,18 +7,18 @@ import javax.inject.Inject
 class AircraftRepository @Inject constructor(
     private val aircraftDao: AircraftDao
 ) {
-    fun observeAircraft() = aircraftDao.observeAll()
+    fun observe() = aircraftDao.observeAll()
 
-    fun addAircraft(aircraft: Aircraft) {
+    fun add(aircraft: Aircraft) {
         if (aircraft.favorite) {
             disfavorExistingAircraft()
         }
         aircraftDao.insert(aircraft)
     }
 
-    fun starAircraft(aircraft: Aircraft) {
+    fun star(aircraft: Aircraft) {
         disfavorExistingAircraft()
-        aircraftDao.starAircraft(aircraft.id, !aircraft.favorite)
+        aircraftDao.star(aircraft.id, !aircraft.favorite)
     }
 
     private fun disfavorExistingAircraft() {

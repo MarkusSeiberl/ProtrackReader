@@ -13,4 +13,13 @@ data class Dropzone(
 
     @ColumnInfo(name = "Name")
     val name: String,
+
+    @ColumnInfo(name = "Location")
+    val location: String,
+
+    @ColumnInfo(name = "ICAO")
+    val icao: String,
+
+    @ColumnInfo(name = "Favorite")
+    val favorite: Boolean,
 )
