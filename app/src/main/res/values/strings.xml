@@ -33,12 +33,14 @@
     <string name="jumpimport_button_finish">@string/button_action_finish</string>
     <string name="jumpimport_button_abort">@string/button_action_abort</string>
     <string name="jumpimport_button_restart">@string/button_action_restart</string>
+    <string name="jumpimport_importing_jumps">Importing jump: %1$s</string>
     <string name="jumpimport_imported_jumps">Imported %1$s jumps.</string>
     <string name="jumpimport_import_failed">Import failed!</string>
     <string name="jumpimport_permission_denied_explanation">Cannot access Protrack2 without permission. Please grant the permission in the settings.</string>
     <string name="jumpimport_waiting_protrack">Waiting for Protrack 2 to come online …</string>
     <string name="jumpimport_protrack2_access_failed">Failed to access the Protrack 2 storage.</string>
     <string name="jumpimport_protrack2_access_failed_restart">Failed to access the Protrack 2 storage. Please restart the App and reconnect the Protrack 2.</string>
+    <string name="jumpimport_volume_not_found">Cannot find Volume!</string>
 
     <string name="jumplist_title">Your Jumps</string>
     <string name="jumplist_button_description">Import jump button</string>

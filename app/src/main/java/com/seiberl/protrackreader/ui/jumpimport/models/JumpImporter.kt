@@ -18,11 +18,8 @@ private const val TAG = "JumpImporter"
 class JumpImporter @Inject constructor(
     private val jumpRepository: JumpRepository,
     private val jumpFileReader: JumpFileReader,
-    private val jumpFileManager: JumpFileManager,
-    @ApplicationContext context: Context
+    private val jumpFileManager: JumpFileManager
 ) {
-
-    private val externalFilesDir = context.getExternalFilesDir(null)
 
     private val _currentJumpImport: MutableStateFlow<Int> = MutableStateFlow(-1)
     val currentJumpImport: StateFlow<Int> = _currentJumpImport

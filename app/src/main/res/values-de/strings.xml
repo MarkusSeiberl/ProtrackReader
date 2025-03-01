@@ -28,12 +28,14 @@
     <string name="jumpimport_button_finish">@string/button_action_finish</string>
     <string name="jumpimport_button_abort">@string/button_action_abort</string>
     <string name="jumpimport_button_restart">@string/button_action_restart</string>
+    <string name="jumpimport_importing_jumps">Lade Sprung: %1$s</string>
     <string name="jumpimport_imported_jumps">%1$s Sprünge importiert.</string>
     <string name="jumpimport_import_failed">Importieren fehlgeschlagen!</string>
     <string name="jumpimport_permission_denied_explanation">Ohne Berechtigung kann die App keine Sprünge importieren. Bitte den Zugriff in den Einstellungen aktivieren.</string>
     <string name="jumpimport_waiting_protrack">Warten darauf, dass Protrack2 einsatzbereit ist …</string>
     <string name="jumpimport_protrack2_access_failed">Zugriff auf den Protrack-2-Speicher fehlgeschlagen.</string>
     <string name="jumpimport_protrack2_access_failed_restart">Zugriff auf den Protrack-2-Speicher fehlgeschlagen. Bitte starten Sie die App neu und verbinden Sie Protrack 2 erneut.</string>
+    <string name="jumpimport_volume_not_found">Protrack-2 konnte nicht gefunden werden.</string>
 
     <string name="jumplist_title">Deine Sprünge</string>
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>

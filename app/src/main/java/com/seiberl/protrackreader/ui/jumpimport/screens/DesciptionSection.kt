@@ -91,7 +91,7 @@ fun DescriptionSection(
             if (uiState.importState == IMPORT_START_FAILED) {
                 Spacer(modifier = Modifier.size(8.dp))
                 Text(
-                    text = "Cannot find Volume!",
+                    text = stringResource(R.string.jumpimport_volume_not_found),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.error

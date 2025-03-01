@@ -122,7 +122,8 @@ fun SearchVolumeFailedOverlay(
 
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = stringResource(R.string.jumpimport_protrack2_access_failed)
+            text = stringResource(R.string.jumpimport_protrack2_access_failed),
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.size(24.dp))

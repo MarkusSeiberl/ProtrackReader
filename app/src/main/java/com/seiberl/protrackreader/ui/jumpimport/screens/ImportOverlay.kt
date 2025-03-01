@@ -79,7 +79,7 @@ fun ImportOnGoingOverlay(
 
         Spacer(modifier = Modifier.size(24.dp))
 
-        Text(text = "Importing Jump: ${uiState.currentJumpNumber}")
+        Text(text = stringResource(R.string.jumpimport_importing_jumps, uiState.currentJumpNumber))
     }
 }
 
