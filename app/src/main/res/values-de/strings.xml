@@ -28,6 +28,7 @@
     <string name="jumpimport_button_finish">@string/button_action_finish</string>
     <string name="jumpimport_button_abort">@string/button_action_abort</string>
     <string name="jumpimport_button_restart">@string/button_action_restart</string>
+    <string name="jumpimport_favorites_import">Die Favoriten werden den Sprüngen zugewiesen.</string>
     <string name="jumpimport_importing_jumps">Lade Sprung: %1$s</string>
     <string name="jumpimport_imported_jumps">%1$s Sprünge importiert.</string>
     <string name="jumpimport_import_failed">Importieren fehlgeschlagen!</string>

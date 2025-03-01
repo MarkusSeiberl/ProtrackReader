@@ -32,4 +32,7 @@ interface DropzoneDao {
 
     @Query("SELECT * FROM Dropzone WHERE Favorite = 1")
     fun getFavorites(): List<Dropzone>
+
+    @Query("SELECT * FROM Dropzone WHERE Favorite = 1")
+    fun observeFavorite(): Flow<Dropzone>
 }

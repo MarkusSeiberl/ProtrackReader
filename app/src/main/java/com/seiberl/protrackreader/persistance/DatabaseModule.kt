@@ -34,7 +34,13 @@ object DatabaseModule {
 
     @Provides
     fun provideJumpRepository(database: AppDatabase, @ApplicationContext context: Context) =
-        JumpRepository(database.jumpDao, JumpFileManager(context))
+        JumpRepository(
+            database.jumpDao,
+            database.aircraftDao,
+            database.canopyDao,
+            database.dropzoneDao,
+            JumpFileManager(context)
+        )
 
     @Provides
     fun provideJumpDetailRepository(database: AppDatabase) = JumpDetailRepository(database.jumpDao)

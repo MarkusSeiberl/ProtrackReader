@@ -33,6 +33,7 @@
     <string name="jumpimport_button_finish">@string/button_action_finish</string>
     <string name="jumpimport_button_abort">@string/button_action_abort</string>
     <string name="jumpimport_button_restart">@string/button_action_restart</string>
+    <string name="jumpimport_favorites_import">Favorites will be assigned to imported jumps.</string>
     <string name="jumpimport_importing_jumps">Importing jump: %1$s</string>
     <string name="jumpimport_imported_jumps">Imported %1$s jumps.</string>
     <string name="jumpimport_import_failed">Import failed!</string>

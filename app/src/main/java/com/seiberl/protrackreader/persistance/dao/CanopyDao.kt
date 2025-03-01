@@ -32,4 +32,7 @@ interface CanopyDao {
 
     @Query("SELECT * FROM Canopy WHERE Favorite = 1")
     fun getFavorites(): List<Canopy>
+
+    @Query("SELECT * FROM Canopy WHERE Favorite = 1")
+    fun observeFavorite(): Flow<Canopy>
 }

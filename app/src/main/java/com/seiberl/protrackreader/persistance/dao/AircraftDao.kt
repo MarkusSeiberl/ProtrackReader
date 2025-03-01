@@ -31,4 +31,7 @@ interface AircraftDao {
 
     @Query("SELECT * FROM Aircraft WHERE Favorite = 1")
     fun getFavorites(): List<Aircraft>
+
+    @Query("SELECT * FROM Aircraft WHERE Favorite = 1")
+    fun observeFavorite(): Flow<Aircraft>
 }

@@ -26,8 +26,9 @@ class JumpFileReader @Inject constructor(
     fun findProtrackVolume(): Boolean {
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         val volumes = storageManager.storageVolumes
-        val storageVolume =
-            volumes.find { it.getDescription(context).contains(PROTRACK_VOLUME_DESCRIPTION) }
+        val storageVolume = volumes.find {
+            it.getDescription(context).contains(PROTRACK_VOLUME_DESCRIPTION) || it.isPrimary.not()
+        }
 
         if (storageVolume == null || storageVolume.directory == null) {
             Log.w(TAG, "Could not find protrack volume")

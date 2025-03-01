@@ -18,6 +18,7 @@ import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.SEARCHING_VOL
 import com.seiberl.protrackreader.ui.jumpimport.models.ImportState.VOLUME_EMPTY
 import com.seiberl.protrackreader.ui.jumpimport.models.JumpFileReader
 import com.seiberl.protrackreader.ui.jumpimport.models.JumpImporter
+import com.seiberl.protrackreader.ui.profile.Favorites
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,6 +37,7 @@ typealias Navigation = () -> Unit
 
 data class ImportUiState(
     val importState: ImportState = IMPORT_READY,
+    val favorites: Favorites = Favorites(null, null, null),
     val currentJumpNumber: Int = 0,
     val importedJumps: Int = 0
 )
@@ -100,6 +102,11 @@ class JumpImportViewModel @Inject constructor(
                     _uiState.update { it.copy(importedJumps = importCount) }
                 }
             }.start()
+            async {
+                repository.observeFavorites().distinctUntilChanged().collect { favorites ->
+                    _uiState.update { it.copy(favorites = favorites) }
+                }
+            }.start()
         }
 
         updateStoragePermission()
@@ -149,7 +156,7 @@ class JumpImportViewModel @Inject constructor(
         val sortedNewJumps = newJumps.sorted()
         val sortedDuplicatedJumps = duplicateJumps.sorted()
 
-        jumpImporter.importJumps(sortedNewJumps, sortedDuplicatedJumps)
+        jumpImporter.importJumps(sortedNewJumps, sortedDuplicatedJumps, _uiState.value.favorites)
     }
 
     fun onCancelClick() = onShowNextActivity()
