@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.seiberl.protrackreader.persistance.entities.Jump
+import com.seiberl.protrackreader.persistance.models.JumpDetail
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import kotlinx.coroutines.flow.Flow
 
@@ -46,7 +47,7 @@ interface JumpDao {
 
     @Transaction
     @Query("SELECT * FROM Jumps WHERE Number = :jumpNr")
-    fun getJumpByNumber(jumpNr: Int): Jump?
+    fun getJumpByNumber(jumpNr: Int): JumpDetail?
 
     @Transaction
     @Query("DELETE FROM Jumps WHERE Number = :jumpNr")

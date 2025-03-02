@@ -16,6 +16,10 @@
     <string name="jumpdetail_info_title_freefall">Freifallzeit</string>
     <string name="jumpdetail_info_title_maxspeed">Max. Geschwindigkeit</string>
     <string name="jumpdetail_info_title_avgspeed">Ø Geschwindigkeit</string>
+    <string name="jumpdetail_meta_title">Meta Daten</string>
+    <string name="jumpdetail_meta_aircraft">Flugzeug</string>
+    <string name="jumpdetail_meta_canopy">Fallschirm</string>
+    <string name="jumpdetail_meta_dropzone">Landeort</string>
 
 
     <string name="jumpimport_imagedescription_protrack">Bild von einem Protrack2</string>

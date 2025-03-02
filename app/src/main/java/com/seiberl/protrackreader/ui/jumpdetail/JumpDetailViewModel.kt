@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
-import com.seiberl.protrackreader.persistance.entities.Jump
+import com.seiberl.protrackreader.persistance.models.JumpDetail
 import com.seiberl.protrackreader.persistance.repository.JumpDetailRepository
 import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 import kotlin.math.pow
 
 data class JumpDetailUiState(
-    val jump: Jump?,
+    val jumpDetail: JumpDetail?,
     val chartModel: CartesianChartModelProducer
 )
 
@@ -35,15 +35,16 @@ class JumpDetailViewModel @Inject constructor(
     fun loadJump(jumpNr: Int) {
         viewModelScope.launch(ioDispatcher) {
             val jumpDetail = jumpDetailRepository.loadJump(jumpNr)
-            _uiState.update { it.copy(jump = jumpDetail) }
+            _uiState.update { it.copy(jumpDetail = jumpDetail) }
             calculateChartValues(jumpDetail)
         }
     }
 
-    private suspend fun calculateChartValues(jump: Jump?) {
-        if (jump == null) {
+    private suspend fun calculateChartValues(jumpDetail: JumpDetail?) {
+        if (jumpDetail == null) {
             return
         }
+        val jump = jumpDetail.jump
 
         val profile = jump.samples.map { it.toAltitude(jump.groundLevelPressure) }
         val time = List(profile.size) { index -> index * 0.25 }

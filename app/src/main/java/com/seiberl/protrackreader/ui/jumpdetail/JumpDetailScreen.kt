@@ -52,6 +52,9 @@ import com.patrykandpatrick.vico.core.cartesian.Zoom
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.seiberl.protrackreader.R
+import com.seiberl.protrackreader.persistance.entities.Aircraft
+import com.seiberl.protrackreader.persistance.entities.Canopy
+import com.seiberl.protrackreader.persistance.entities.Dropzone
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -114,16 +117,18 @@ fun JumpDetailScreen(
                 JumpChart(Modifier.fillMaxSize(), viewModel)
 
             } else {
+                val jump = uiState.jumpDetail?.jump
                 JumpTitle(jumpNr)
 
-                JumpDateTime(uiState.jump?.timestamp ?: Instant.now())
+                JumpDateTime(jump?.timestamp ?: Instant.now())
 
-                val exit = uiState.jump?.exitAltitude ?: 0
-                val deployment = uiState.jump?.deploymentAltitude ?: 0
-                val freefall = uiState.jump?.freefallTime ?: 0
-                val maxSpeed = ((uiState.jump?.maxSpeed ?: 0) * 3.6).toInt()
-                val avgSpeed = ((uiState.jump?.averageSpeed ?: 0) * 3.6).toInt()
+                val exit = jump?.exitAltitude ?: 0
+                val deployment = jump?.deploymentAltitude ?: 0
+                val freefall = jump?.freefallTime ?: 0
+                val maxSpeed = ((jump?.maxSpeed ?: 0) * 3.6).toInt()
+                val avgSpeed = ((jump?.averageSpeed ?: 0) * 3.6).toInt()
                 JumpStatistics(exit, deployment, freefall, maxSpeed, avgSpeed)
+                JumpFavorites(uiState.jumpDetail?.aircraft, uiState.jumpDetail?.canopy, uiState.jumpDetail?.dropzone)
 
                 JumpChart(Modifier.fillMaxHeight(0.75f), viewModel)
             }
@@ -217,6 +222,49 @@ fun JumpStatistics(
 }
 
 @Composable
+fun JumpFavorites(aircraft: Aircraft?, canopy: Canopy?, dropzone: Dropzone?) {
+    if (aircraft == null && canopy == null && dropzone == null) return
+
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .padding(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            Row {
+                Icon(modifier = Modifier.padding(end = 8.dp),
+                    painter =painterResource(R.drawable.analytics),
+                    contentDescription = null
+                )
+                Text(
+                    text = stringResource(R.string.jumpdetail_meta_title),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Text(stringResource(R.string.jumpdetail_meta_aircraft))
+            Text(stringResource(R.string.jumpdetail_meta_canopy))
+            Text(stringResource(R.string.jumpdetail_meta_dropzone))
+        }
+
+        Column(modifier = Modifier, horizontalAlignment = Alignment.End) {
+            Text("")
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Text(aircraft?.name ?: "")
+            Text(canopy?.name ?: "")
+            Text(dropzone?.name ?: "")
+        }
+    }
+}
+
+@Composable
 fun JumpChart(modifier: Modifier = Modifier,viewModel: JumpDetailViewModel) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -225,7 +273,7 @@ fun JumpChart(modifier: Modifier = Modifier,viewModel: JumpDetailViewModel) {
     val zoomState = rememberVicoZoomState(initialZoom = Zoom.Content)
     Log.d("TAAG", "zoom ${zoomState.value}")
     Log.d("TAAG", "zoomr ${zoomState.valueRange}")
-    Log.d("TAAG", "samples ${uiState.jump?.sampleSize}")
+    Log.d("TAAG", "samples ${uiState.jumpDetail?.jump?.sampleSize}")
 
 
     var shownSampleCount = 10.0 / zoomState.value
