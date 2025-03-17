@@ -45,13 +45,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.seiberl.protrackreader.R
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import com.seiberl.protrackreader.ui.Screen
-import com.seiberl.protrackreader.ui.theme.surfaceBrightLight
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.Date
@@ -104,18 +104,23 @@ fun JumpListScreen(
                         )
                         DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                             DropdownMenuItem(
-                                text = { Text("Set Meta Data") },
-                                onClick = { showMenu = false; TODO() }
+                                text = {
+                                    Text(stringResource(R.string.jumplist_edit_meta))
+                                       },
+                                enabled = uiState.selectedJumps.isNotEmpty(),
+                                onClick = {
+                                    showMenu = false;
+                                    viewModel.onEditMetaDataClicked()
+                                }
                             )
-                            if (uiState.jumps.isNotEmpty()) {
-                                DropdownMenuItem(
-                                    text = { Text("Create PDF") },
-                                    onClick = {
-                                        showMenu = false
-                                        viewModel.onCreatePdfClicked()
-                                    }
-                                )
-                            }
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.jumplist_create_pdf)) },
+                                enabled = uiState.jumps.isNotEmpty(),
+                                onClick = {
+                                    showMenu = false
+                                    viewModel.onCreatePdfClicked()
+                                }
+                            )
                         }
                     }
                 }
@@ -156,6 +161,18 @@ fun JumpListScreen(
             )
         }
 
+        if (uiState.showEditMetaDialog) {
+            val selectedJumpMetaData = uiState.jumps.filter { it.number in uiState.selectedJumps }
+            EditMetaDataDialog(
+                selectedJumpMetaData,
+                uiState.aircraft,
+                uiState.canopies,
+                uiState.dropzones,
+                viewModel::onEditMetaDialogConfirmed,
+                viewModel::onEditMetaDialogDismiss
+            )
+        }
+
         if (uiState.jumps.isEmpty()) {
             EmptyListContent(padding = padding)
         } else {
@@ -176,7 +193,7 @@ fun EmptyListContent(padding: PaddingValues) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Connect your phone to a ProTrack device to import jumps.")
+        Text(text = stringResource(R.string.jumplist_connect_phone), textAlign = TextAlign.Justify)
     }
 }
 

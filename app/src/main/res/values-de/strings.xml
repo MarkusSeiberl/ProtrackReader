@@ -6,8 +6,16 @@
     <string name="button_action_continue">Weiter</string>
     <string name="button_action_finish">Beenden</string>
     <string name="button_action_proceed">Weiter</string>
+    <string name="button_action_update">Aktualisieren</string>
     <string name="button_action_restart">Neustart</string>
     <string name="button_action_retry">Wiederholen</string>
+
+    <string name="edit_meta_dialog_title">Metadaten bearbeiten</string>
+    <string name="edit_meta_dialog_description">Wählen Sie das gewünschte Flugzeug, den Fallschirm und die Landezone aus der Liste aus.</string>
+    <string name="edit_meta_dialog_update_action">@string/button_action_update</string>
+    <string name="edit_meta_dialog_choose_aircraft">Wähle ein Flugzeug</string>
+    <string name="edit_meta_dialog_choose_canopy">Wähle einen Fallschirm</string>
+    <string name="edit_meta_dialog_choose_dropzone">Wähle einen Landeort</string>
 
     <string name="jumpdetail_title">Sprung %1$s</string>
     <string name="jumpdetail_info_title_statistics">Statistik</string>
@@ -16,7 +24,7 @@
     <string name="jumpdetail_info_title_freefall">Freifallzeit</string>
     <string name="jumpdetail_info_title_maxspeed">Max. Geschwindigkeit</string>
     <string name="jumpdetail_info_title_avgspeed">Ø Geschwindigkeit</string>
-    <string name="jumpdetail_meta_title">Meta Daten</string>
+    <string name="jumpdetail_meta_title">Metadaten</string>
     <string name="jumpdetail_meta_aircraft">Flugzeug</string>
     <string name="jumpdetail_meta_canopy">Fallschirm</string>
     <string name="jumpdetail_meta_dropzone">Landeort</string>
@@ -45,6 +53,11 @@
     <string name="jumplist_title">Deine Sprünge</string>
     <string name="jumplist_button_description">Button zum importieren von Sprüngen</string>
     <string name="jumplist_delete_icon_description">Lösche ausgewählte Sprünge.</string>
+    <string name="jumplist_create_pdf">PDF Log erstellen</string>
+    <string name="jumplist_edit_meta">Metadaten bearbeiten</string>
+    <string name="jumplist_edit_meta_description">Flugzeug, Fallschirm und/oder Landeort für die ausgewählten Sprünge zuweisen.</string>
+    <string name="jumplist_connect_phone">Verbinden Sie ihr Handy mit einem ProTrack 2 um aufgezeichnete Sprünge zu importieren.</string>
+
 
     <string name="pdf_dialog_title">PDF erstellen</string>
     <string name="pdf_dialog_description">Geben Sie die Sprungnummern ein, die Sie in die PDF-Datei aufnehmen möchten.</string>

@@ -6,6 +6,9 @@ import android.os.Environment
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seiberl.protrackreader.persistance.entities.Aircraft
+import com.seiberl.protrackreader.persistance.entities.Canopy
+import com.seiberl.protrackreader.persistance.entities.Dropzone
 import com.seiberl.protrackreader.persistance.repository.JumpRepository
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import com.seiberl.protrackreader.ui.home.models.JumpLogPdfCreator
@@ -13,6 +16,7 @@ import com.seiberl.protrackreader.util.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -24,8 +28,12 @@ import kotlin.math.min
 data class JumpListUiState(
     val jumps: List<JumpMetaData> = emptyList(),
     val selectedJumps: List<Int> = emptyList(),
+    val aircraft: List<Aircraft> = emptyList(),
+    val canopies: List<Canopy> = emptyList(),
+    val dropzones: List<Dropzone> = emptyList(),
     val showPermissionDialog: Boolean = false,
     val showPrintJumpsDialog: Boolean = false,
+    val showEditMetaDialog: Boolean = false,
     val dialogErrorToJumpField: Boolean = false,
     val dialogErrorFromJumpField: Boolean = false
 )
@@ -58,11 +66,34 @@ class JumpListViewModel @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             // Get and observe all jumps from database
-            repository.observeJumpMetaData().collect { updatedJumps ->
-                _uiState.update { oldState ->
-                    oldState.copy(jumps = updatedJumps.sortedByDescending { it.number })
+            async {
+                repository.observeJumpMetaData().collect { updatedJumps ->
+                    _uiState.update { oldState ->
+                        oldState.copy(jumps = updatedJumps.sortedByDescending { it.number })
+                    }
                 }
-            }
+            }.start()
+            async {
+                repository.observeAircraft().collect { aircraft ->
+                    _uiState.update { oldState ->
+                        oldState.copy(aircraft = aircraft)
+                    }
+                }
+            }.start()
+            async {
+                repository.observeCanopies().collect { canopies ->
+                    _uiState.update { oldState ->
+                        oldState.copy(canopies = canopies)
+                    }
+                }
+            }.start()
+            async {
+                repository.observeDropzone().collect { dropzones ->
+                    _uiState.update { oldState ->
+                        oldState.copy(dropzones = dropzones)
+                    }
+                }
+            }.start()
         }
 
         // Check if we have permission to read external storage (= Protrack II)
@@ -106,7 +137,15 @@ class JumpListViewModel @Inject constructor(
         }
     }
 
+    fun onEditMetaDataClicked() {
+        if (_uiState.value.jumps.isNotEmpty()) {
+            _uiState.update { it.copy(showEditMetaDialog = true) }
+        }
+    }
+
     fun onPrintJumpsDialogDismiss() = _uiState.update { it.copy(showPrintJumpsDialog = false) }
+
+    fun onEditMetaDialogDismiss() = _uiState.update { it.copy(showEditMetaDialog = false) }
 
     fun printJumps(startJumpNr: String, endJumpNr: String) {
         val fromIsValid = isJumpNrValid(startJumpNr)
@@ -137,6 +176,18 @@ class JumpListViewModel @Inject constructor(
         }
     }
 
+    fun onEditMetaDialogConfirmed(
+        jumpMetadata: List<JumpMetaData>,
+        aircraft: Aircraft?,
+        canopy: Canopy?,
+        dropzone: Dropzone?
+    ) {
+        onEditMetaDialogDismiss()
+        viewModelScope.launch(ioDispatcher) {
+            repository.updateJumpsMetaData(jumpMetadata, aircraft, canopy, dropzone)
+        }
+    }
+
     private fun isJumpNrValid(jumpNrToVerify: String): Boolean {
         // Minimum is last jump number and maximum is first jump number because sorted descending
         val minJumpNr = _uiState.value.jumps.lastOrNull()?.number ?: 0
@@ -144,4 +195,5 @@ class JumpListViewModel @Inject constructor(
         val jumpNr = jumpNrToVerify.toIntOrNull()
         return jumpNr != null && jumpNr >= minJumpNr && jumpNr <= maxJumpNr
     }
+
 }

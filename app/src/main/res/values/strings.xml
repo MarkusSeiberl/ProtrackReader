@@ -7,8 +7,16 @@
     <string name="button_action_continue">Continue</string>
     <string name="button_action_finish">Finish</string>
     <string name="button_action_proceed">Proceed</string>
+    <string name="button_action_update">Update</string>
     <string name="button_action_restart">Restart</string>
     <string name="button_action_retry">Retry</string>
+
+    <string name="edit_meta_dialog_title">Edit meta data</string>
+    <string name="edit_meta_dialog_description">Select the desired aircraft, canopy and dropzone from the list.</string>
+    <string name="edit_meta_dialog_update_action">@string/button_action_update</string>
+    <string name="edit_meta_dialog_choose_aircraft">Choose an aircraft</string>
+    <string name="edit_meta_dialog_choose_canopy">Choose a canopy</string>
+    <string name="edit_meta_dialog_choose_dropzone">Choose a dropzone</string>
 
     <string name="title_activity_jump_import" translatable="false">JumpImportActivity</string>
     <string name="jumpdetail_info_content_meter" translatable="false">%1$s m</string>
@@ -50,6 +58,10 @@
     <string name="jumplist_title">Your Jumps</string>
     <string name="jumplist_button_description">Import jump button</string>
     <string name="jumplist_delete_icon_description">Delete selected jumps.</string>
+    <string name="jumplist_create_pdf">Create PDF Log</string>
+    <string name="jumplist_edit_meta">Edit meta data</string>
+    <string name="jumplist_edit_meta_description">Set aircraft, canopy and/or dropzone for the selected jumps.</string>
+    <string name="jumplist_connect_phone">Connect your phone to a ProTrack 2 device to import recorded jumps.</string>
 
     <string name="pdf_dialog_title">Create PDF</string>
     <string name="pdf_dialog_description">Enter the jump numbers you want to include in the PDF.</string>

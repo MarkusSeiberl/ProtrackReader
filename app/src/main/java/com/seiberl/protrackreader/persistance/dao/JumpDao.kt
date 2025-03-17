@@ -52,4 +52,8 @@ interface JumpDao {
     @Transaction
     @Query("DELETE FROM Jumps WHERE Number = :jumpNr")
     fun deleteByNumber(jumpNr: Int)
+
+    @Transaction
+    @Query("SELECT * FROM Jumps WHERE Number IN (:jumpNumbers)")
+    fun getJumpsByNumber(jumpNumbers: List<Int>): List<Jump>
 }

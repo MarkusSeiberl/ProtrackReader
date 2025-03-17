@@ -5,6 +5,9 @@ import com.seiberl.protrackreader.persistance.dao.AircraftDao
 import com.seiberl.protrackreader.persistance.dao.CanopyDao
 import com.seiberl.protrackreader.persistance.dao.DropzoneDao
 import com.seiberl.protrackreader.persistance.dao.JumpDao
+import com.seiberl.protrackreader.persistance.entities.Aircraft
+import com.seiberl.protrackreader.persistance.entities.Canopy
+import com.seiberl.protrackreader.persistance.entities.Dropzone
 import com.seiberl.protrackreader.persistance.entities.Jump
 import com.seiberl.protrackreader.persistance.views.JumpMetaData
 import com.seiberl.protrackreader.ui.profile.Favorites
@@ -33,6 +36,10 @@ class JumpRepository @Inject constructor(
         }
     }
 
+    fun observeAircraft(): Flow<List<Aircraft>> = aircraftDao.observeAll()
+    fun observeCanopies(): Flow<List<Canopy>> = canopyDao.observeAll()
+    fun observeDropzone(): Flow<List<Dropzone>> = dropzoneDao.observeAll()
+
     fun insertJumpNumbers(recordedJumpData: List<Jump>, duplicateJumpData: List<Jump>) {
         jumpDao.insert(recordedJumpData)
         updateJumps(duplicateJumpData)
@@ -56,5 +63,22 @@ class JumpRepository @Inject constructor(
                 jumpDao.deleteByNumber(jumpNumber)
             }
         }
+    }
+
+    fun updateJumpsMetaData(
+        jumpNumbers: List<JumpMetaData>,
+        aircraft: Aircraft?,
+        canopy: Canopy?,
+        dropzone: Dropzone?
+    ) {
+        val jumps = jumpDao.getJumpsByNumber(jumpNumbers.map { it.number })
+        val updatedJumps = jumps.map { jump ->
+            jump.copy(
+                aircraftId = aircraft?.id,
+                canopyId = canopy?.id,
+                dropzoneId = dropzone?.id
+            )
+        }
+        jumpDao.update(updatedJumps)
     }
 }
