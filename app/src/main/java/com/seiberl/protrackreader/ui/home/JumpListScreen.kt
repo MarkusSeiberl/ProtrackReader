@@ -212,7 +212,6 @@ fun ScrollContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surfaceBright)
             .padding(padding),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LazyColumn {
