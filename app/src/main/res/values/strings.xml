@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">ProtrackReader</string>
+    <string name="app_name" translatable="false">Skydive Jump Reader</string>
 
     <string name="button_action_abort">Abort</string>
     <string name="button_action_back">Back</string>
