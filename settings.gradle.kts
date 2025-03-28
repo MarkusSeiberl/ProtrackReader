@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ProtrackReader"
+rootProject.name = "SkydiveJumpReader"
 include(":app")

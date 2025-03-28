@@ -8,6 +8,9 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
 }
 
 android {
@@ -29,7 +32,7 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePropertiesFile = rootProject.file("\\config\\keystore.properties")
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
             val keystoreProperties = Properties()
             keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
@@ -40,7 +43,6 @@ android {
                 storeFile = file(storePath)
             }
             storePassword = keystoreProperties["storePassword"] as String
-            enableV2Signing = true
         }
     }
 
@@ -116,6 +118,7 @@ dependencies {
     implementation(libs.hilt.compiler)
     implementation(libs.vico.compose.m3)
     implementation(libs.androidx.adaptive.android)
+    implementation(platform(libs.firebase.bom))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
