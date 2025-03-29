@@ -21,7 +21,9 @@
 #-renamesourcefileattribute SourceFile
 
 
+# This is generated automatically by the Android Gradle plugin.
 -dontwarn com.google.auto.service.AutoService
+-dontwarn com.google.firebase.perf.network.FirebasePerfUrlConnection
 -dontwarn java.sql.JDBCType
 -dontwarn javax.annotation.processing.AbstractProcessor
 -dontwarn javax.annotation.processing.Filer
@@ -55,4 +57,3 @@
 -dontwarn javax.lang.model.util.SimpleTypeVisitor8
 -dontwarn javax.lang.model.util.Types
 -dontwarn javax.tools.Diagnostic$Kind
--dontwarn com.google.firebase.perf.network.FirebasePerfUrlConnection
