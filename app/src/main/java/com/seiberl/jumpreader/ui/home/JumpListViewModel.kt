@@ -38,7 +38,7 @@ data class JumpListUiState(
     val dialogErrorFromJumpField: Boolean = false
 )
 
-private const val AUTHORITY = "com.seiberl.protrackreader.fileprovider"
+private const val AUTHORITY = "com.seiberl.jumpreader.fileprovider"
 
 @HiltViewModel
 class JumpListViewModel @Inject constructor(

@@ -14,11 +14,11 @@ plugins {
 }
 
 android {
-    namespace = "com.seiberl.protrackreader"
+    namespace = "com.seiberl.jumpreader"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.seiberl.protrackreader"
+        applicationId = "com.seiberl.jumpreader"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
