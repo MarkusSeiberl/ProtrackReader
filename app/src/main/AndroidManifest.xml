@@ -19,7 +19,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.seiberl.protrackreader.fileprovider"
+            android:authorities="com.seiberl.jumpreader.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
