@@ -19,7 +19,7 @@ sealed class NavigationBarItem(
 
     data object Profile : NavigationBarItem(
         screen = Screen.ProfileScreen,
-        icon = R.drawable.account_circle,
+        icon = R.drawable.settings,
         title = R.string.navigation_profile_label,
         route = Screen.ProfileScreen::class.java.name.toRoute()
     )

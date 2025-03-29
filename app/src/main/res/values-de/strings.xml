@@ -64,7 +64,7 @@
     <string name="pdf_dialog_include_all">Alle Sprünge hinzufügen</string>
 
     <string name="navigation_home_label">Sprünge</string>
-    <string name="navigation_profile_label">Profil</string>
+    <string name="navigation_profile_label">Einstellungen</string>
 
     <string name="pdf_jump_nr">Nr.</string>
     <string name="pdf_date">Datum</string>

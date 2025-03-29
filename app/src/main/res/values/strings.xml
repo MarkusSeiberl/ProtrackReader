@@ -68,7 +68,7 @@
     <string name="pdf_dialog_include_all">Include all jumps</string>
 
     <string name="navigation_home_label">Jumps</string>
-    <string name="navigation_profile_label">Profile</string>
+    <string name="navigation_profile_label">Settings</string>
 
     <string name="pdf_jump_nr">Nr.</string>
     <string name="pdf_date">Date</string>
