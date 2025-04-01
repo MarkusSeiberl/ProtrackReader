@@ -1,3 +1,4 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -52,6 +53,9 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
+            }
         }
 
         release {
@@ -59,6 +63,9 @@ android {
             isShrinkResources = true
             isDebuggable = false
             signingConfig = signingConfigs.getByName("release")
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = true
+            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
