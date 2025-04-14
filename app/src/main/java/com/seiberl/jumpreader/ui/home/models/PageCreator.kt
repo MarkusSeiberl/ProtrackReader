@@ -71,7 +71,7 @@ class PageCreator(
         return startX + cell.height
     }
 
-    fun canAddJump(jump: JumpMetaData): Boolean {
+    fun canAddJump(jump: CompleteJumpInfo): Boolean {
         val cell = CellDimensions(fontSizeBody)
         val paint = Paint().apply {
             color = Color.BLACK
@@ -91,12 +91,12 @@ class PageCreator(
         return remainingHeight >= cell.height
     }
 
-    fun addJump(jump: JumpMetaData) {
+    fun addJump(jump: CompleteJumpInfo) {
         currentY = drawJump(canvas, currentY, jump)
         drawHorizontalLine(canvas, PADDING_START, currentY, pageWidth.toFloat() - PADDING_END)
     }
 
-    private fun drawJump(canvas: Canvas, startY: Float, jump: JumpMetaData): Float {
+    private fun drawJump(canvas: Canvas, startY: Float, jump: CompleteJumpInfo): Float {
         val cell = CellDimensions(fontSizeBody)
         var currentX = PADDING_START
         val textPositionY = startY + cell.textPositionY
@@ -192,21 +192,21 @@ class PageCreator(
     }
 }
 
-fun JumpMetaData.toList(): List<String> {
+fun CompleteJumpInfo.toList(): List<String> {
     val formattedDate = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
                 .withZone(ZoneId.systemDefault())
-                .format(timestamp)
+                .format(jump.timestamp)
 
     return listOf(
-        number.toString(),
+        jump.number.toString(),
         formattedDate,
-        "Cessna Caravan 208",
-        "Safire 2 149",
-        "LOLF",
-        "2 m/s",
-        exitAltitude.toString(),
-        freefallTime.toString(),
-        "4-way\n jump - QMFCN asdf more test samples", // TODO check for double slashes
+        aircraft?.name ?: "",
+        (canopy?.name?.plus(" - ") ?: "") + (canopy?.size ?: ""),
+        (dropzone?.icao?.plus(" - ") ?: "") + (dropzone?.name ?: ""),
+        "",
+        jump.exitAltitude.toString(),
+        jump.freefallTime.toString(),
+        "",
         ""
     )
 }

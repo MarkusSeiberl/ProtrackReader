@@ -169,7 +169,12 @@ class JumpListViewModel @Inject constructor(
                     it.number in lowerJumpNr..upperJumpNr
                 }
 
-                val pdfFile = jumpLogPdfCreator.createJumpLogPdf(jumpsToPrint)
+                val pdfFile = jumpLogPdfCreator.createJumpLogPdf(
+                    jumpsToPrint,
+                    _uiState.value.aircraft,
+                    _uiState.value.canopies,
+                    _uiState.value.dropzones
+                )
                 val fileUri = FileProvider.getUriForFile(context, AUTHORITY, pdfFile)
                 onShareFile(fileUri)
             }

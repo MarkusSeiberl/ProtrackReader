@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.pdf.PdfDocument
 import android.util.Log
 import com.seiberl.jumpreader.R
+import com.seiberl.jumpreader.persistance.entities.Aircraft
+import com.seiberl.jumpreader.persistance.entities.Canopy
+import com.seiberl.jumpreader.persistance.entities.Dropzone
 import com.seiberl.jumpreader.persistance.views.JumpMetaData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -34,7 +37,7 @@ class JumpLogPdfCreator @Inject constructor(
     private val externalFilesDir = context.getExternalFilesDir(null)
     private val localizedHeaders = HEADER_RESOURCES.map { context.getString(it) }
 
-    fun createJumpLogPdf(jumps: List<JumpMetaData>): File {
+    fun createJumpLogPdf(jumps: List<JumpMetaData>, aircrafts: List<Aircraft>, canopies: List<Canopy>, dropzones: List<Dropzone>): File {
         val pdfDocument = PdfDocument()
 
         val sortedJumps = jumps.sortedBy { it.number }
@@ -52,8 +55,12 @@ class JumpLogPdfCreator @Inject constructor(
 
         while (iterator.hasNext()) {
             val jump = iterator.next()
-            if (pageCreator.canAddJump(jump)) {
-                pageCreator.addJump(jump)
+            val aircraft = aircrafts.firstOrNull { it.id == jump.aircraftId }
+            val canopy = canopies.firstOrNull { it.id == jump.canopyId }
+            val dropzone = dropzones.firstOrNull { it.id == jump.dropzoneId }
+            val completeJump = CompleteJumpInfo(jump, aircraft, canopy, dropzone)
+            if (pageCreator.canAddJump(completeJump)) {
+                pageCreator.addJump(completeJump)
             } else {
                 pdfDocument.finishPage(pageCreator.create())
                 pdfPage += 1
@@ -65,7 +72,7 @@ class JumpLogPdfCreator @Inject constructor(
                     pdfDocument,
                     pdfPage
                 )
-                pageCreator.addJump(jump)
+                pageCreator.addJump(completeJump)
             }
         }
         pdfDocument.finishPage(pageCreator.create())
