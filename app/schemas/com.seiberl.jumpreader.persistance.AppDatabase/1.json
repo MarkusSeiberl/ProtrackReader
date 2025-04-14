@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a8ebc862d4a07eb1441a844a4df234bc",
+    "identityHash": "064cf92cda3d0605d7b1bf4defb3ea09",
     "entities": [
       {
         "tableName": "Jumps",
@@ -234,7 +234,7 @@
       },
       {
         "tableName": "Canopy",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `Name` TEXT NOT NULL, `Manufacturer` TEXT NOT NULL, `Size` INTEGER NOT NULL, `Favorite` INTEGER NOT NULL, PRIMARY KEY(`ID`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` TEXT NOT NULL, `Name` TEXT NOT NULL, `Manufacturer` TEXT NOT NULL, `Size` INTEGER, `Favorite` INTEGER NOT NULL, PRIMARY KEY(`ID`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -258,7 +258,7 @@
             "fieldPath": "size",
             "columnName": "Size",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "favorite",
@@ -329,7 +329,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a8ebc862d4a07eb1441a844a4df234bc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '064cf92cda3d0605d7b1bf4defb3ea09')"
     ]
   }
 }
