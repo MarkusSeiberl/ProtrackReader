@@ -168,7 +168,7 @@ fun CanopyItem(canopy: Canopy, onStarClicked: (Canopy) -> Unit, onRemoveClicked:
                 },
                 supportingContent = {
                     Text(
-                        text = "${canopy.size} — ${canopy.manufacturer}",
+                        text = "${canopy.size?.toString()?.plus(" — ") ?: ""}${canopy.manufacturer}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.outline
                     )

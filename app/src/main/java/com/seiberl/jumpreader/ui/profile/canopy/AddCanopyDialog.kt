@@ -159,7 +159,7 @@ fun AddCanopyDialog(onConfirm: (canopy: Canopy) -> Unit, onDismiss: () -> Unit) 
                                 Canopy(
                                     name = canopyName,
                                     manufacturer = manufacturer,
-                                    size = canopySize.toInt(),
+                                    size = canopySize.toIntOrNull(),
                                     favorite = checkedState
                                 )
                             )

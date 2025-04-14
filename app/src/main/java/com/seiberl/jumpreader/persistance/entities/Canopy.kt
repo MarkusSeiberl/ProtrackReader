@@ -18,7 +18,7 @@ data class Canopy(
     val manufacturer: String,
 
     @ColumnInfo(name = "Size")
-    val size: Int,
+    val size: Int?,
 
     @ColumnInfo(name = "Favorite")
     val favorite: Boolean,
